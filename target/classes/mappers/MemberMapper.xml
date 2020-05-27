@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemberMapper">
+	<!-- 회원가입 -->
+	<insert id="insert">
+		INSERT INTO signup( member_no,
+							member_id,
+							password,
+							name,
+							gender,
+							birth,
+							mail,
+							phone,
+							address,
+							secession
+						  )
+				   VALUES ( SIGNUP_SEQ.nextval,
+				   			#{member_id},
+				   			#{password},
+				   			#{name},
+				   			#{gender},
+				   			#{birth},
+				   			#{mail},
+				   			#{phone},
+				   			#{address},
+				   			'1'
+				   		  )
+	</insert>
+	<!-- 회원정보수정 -->
+	<update id="update">
+		UPDATE signup SET password = #{password},
+						  name     = #{name},
+						  gender   = #{gender},
+						  birth    = #{birth},
+						  mail     = #{mail},
+						  phone    = #{phone},
+						  address   = #{address}
+		WHERE member_id = #{member_id}
+	</update>
+	<!-- 회원탈퇴 -->
+	<delete id="delete">
+		UPDATE signup SET secession = '3'
+		WHERE member_id = #{member_id}
+	</delete>
+	<!-- 로그인 -->
+	<select id="login" resultType="com.myproject.board.vo.MemberVO">
+		SELECT member_id, name, secession 
+		  FROM signup 
+		 WHERE member_id = #{member_id} 
+		   AND password = #{password}
+	</select>
+</mapper>
