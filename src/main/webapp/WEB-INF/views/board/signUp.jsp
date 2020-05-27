@@ -49,31 +49,56 @@
 			chck = /[`/?<>,.;:~!@\#$%^&*\()\-=+_"']/gi;
 			
 			var temp = $("#member_id").val();
-			if(chck.test(temp)){ //특수문자가 포함되면 삭제하여 값으로 다시셋팅
+			if(chck.test(temp)){ //아이디에 특수문자가 포함되면 삭제하여 빈값으로 다시셋팅
 				$("#member_id").val(temp.replace(chck,""));
 			}
 		});
 		
 		$("#password1").focusout(function(){
-			var chkid = $("member_id").val();
+			var chkid = $("#member_id").val();
 			var chkpassword = $("#password").val();
 			var chkpassword1 = $("#password1").val();
-			
+
 			if(chkpassword1 != ""){
-				if(!/^[a-zA-Z0-9]{10,15}$/.test(chkpassword1)){//숫자와 영문자 조합으로 10~15자리가 안될경우 경고
-					$("#appendlabelpassword").append('<br><span style="color: red;">숫자와 영문자 조합으로 10~15자리를 사용해야 합니다.</span>');
+				if(!/^[a-zA-Z0-9]{10,15}$/.test(chkpassword1)){
+					//숫자와 영문자 조합으로 10~15자리가 안될경우 경고문구를 append한다
+					//포커스 아웃을 반복할경우 경고문구가 계속 누적된다. 앞선 문구를 제거해야 할듯
+					$("#appendlabelpassword").empty();
+					$("#appendlabelpassword2").empty();
+					$("#appendlabelpassword").append('<br><span >비밀번호 재확인</span>');
+					$("#appendlabelpassword2").append('<br><span style="color: red;">숫자와 영문자 조합으로 10~15자리를 사용해야 합니다.</span>');
 					return false;
-				}else{
-					$("#appendlabelpassword").append('');
+				}			
+				else{
+					$("#appendlabelpassword2").empty();
 				}
-				
-				if(chkpassword1.search(chkid) > -1){
-					$("#appendlabelpassword").append('<br><span style="color: red;">비밀번호에 아이디가 포함되었습니다.</span>');	
+				if(chkpassword1.search(chkid) > -1){//0이상일 경우 아이디가 비밀번호에 포함된 것
+					$("#appendlabelpassword").empty();
+					$("#appendlabelpassword2").empty();
+					$("#appendlabelpassword").append('<br><span >비밀번호 재확인</span>');
+					$("#appendlabelpassword2").append('<br><span style="color: red;">비밀번호에 아이디가 포함되었습니다.</span>');	
 					return false;
-				}else{
-					$("#appendlabelpassword").append('');
+				}
+				else{
+					$("#appendlabelpassword2").empty();
+				}
+				if(chkpassword != chkpassword1){//비밀번호 확인이 틀릴 경우
+					$("#appendlabelpassword").empty();
+					$("#appendlabelpassword2").empty();
+					$("#appendlabelpassword").append('<br><span >비밀번호 재확인</span>');
+					$("#appendlabelpassword2").append('<br><span style="color: red;">비밀번호를 다시 확인해 주세요.</span>');
+					return false;
+				}
+				else{
+					$("#appendlabelpassword2").empty();
+						
+				}
+				if($("#appendlabelpassword2").val()==''){
+					$("#appendlabelpassword").empty();
+					$("#appendlabelpassword").append('<br><span style="color: blue;">비밀번호 확인 완료</span>');
 				}
 			}
+			
 		});
 	});
 </script>	
@@ -96,6 +121,7 @@
 				</div>
 				<div class="form-group">
 					<label id="appendlabelpassword" for="PASSWORD">비밀번호 재확인</label>
+					<label id="appendlabelpassword2" for="PASSWORD"></label>
 					<input type="password" id="password1"class="form-control" name="member_password1" >
 				</div>
 				<div class="form-group">
@@ -114,9 +140,9 @@
 					<div>
 					<label for="BIRTHDAY">생년월일</label>
 					</div>
-					<input type="number" class="form-control" id="member_birth1" name="member_birth1" maxlength="4" oninput="maxLengthCheck(this)">&nbsp;년&nbsp;
-					<input type="number" class="form-control" id="member_birth2" name="member_birth2" maxlength="2" oninput="maxLengthCheck(this)">&nbsp;월&nbsp;
-					<input type="number" class="form-control" id="member_birth3" name="member_birth3" maxlength="2" oninput="maxLengthCheck(this)">&nbsp;일&nbsp;
+					<input type="number" class="form-control" id="member_birth1" name="member_birth1" maxlength="4" oninput="maxLengthCheck(this)" placeholder="YYYY">&nbsp;년&nbsp;
+					<input type="number" class="form-control" id="member_birth2" name="member_birth2" maxlength="2" oninput="maxLengthCheck(this)" placeholder="MM">&nbsp;월&nbsp;
+					<input type="number" class="form-control" id="member_birth3" name="member_birth3" maxlength="2" oninput="maxLengthCheck(this)" placeholder="DD">&nbsp;일&nbsp;
 				</div>
 				<div class="form-group">
 					<label for="IputEmail">이메일 주소</label>
@@ -124,7 +150,7 @@
 				</div>
 				<div class="form-group">
 					<label for="PHONE">핸드폰</label>
-					<input type="number" class="form-control" name="member_phone" maxlength="11" oninput="maxLengthCheck(this)">
+					<input type="number" class="form-control" name="member_phone" maxlength="11" oninput="maxLengthCheck(this)" placeholder="'-' 없이 입력해주세요.">
 				</div>
 				<div class="form-group">
 					<label for="ADDRESS">주소</label>

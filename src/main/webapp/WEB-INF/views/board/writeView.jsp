@@ -133,7 +133,7 @@
 	    $(".inputs").keyup (function () {
 	        var charLimit = $(this).attr("maxlength");
 	        if (this.value.length >= charLimit) {
-	        	  $( document ).ready(function() {
+	        	  $( document ).ready(function() {//좌측 레이어로 로딩시 해당하는 옵션?
 	        	    	$('#content2').prop("disabled", false);
 	        	  }); 
 	            $("#content2").focus();
@@ -153,15 +153,15 @@
     
   	//캡쳐 url 담기
     function imgSrcMake(){
-    	html2canvas($("#alertalert").get(0)).then(function (canvas) {
+    	html2canvas($("#alertalert").get(0)).then(function(canvas) {
     	imgSource = $("#imgSrc").val(canvas.toDataURL("image/png"));
     	});
     	return imgSource;
-    }
-  	
+    }    
+    
   	//데이터 등록
    	function sumcontent(){
-
+   		
 		var imgSourceChk = imgSrcMake();
 
 		if(imgSourceChk != ""){
@@ -175,7 +175,7 @@
    				return false
    			}
 			
-   			if(contentTotal == ""){
+   			if(contentTotal == ""){//텍스트에리어에 테스트가 적혀있어서 작동하지 않는다.
    				alert("내용을 적어주세요.");
    				return false;
    			}
@@ -200,7 +200,7 @@
 		}
    	}
   	
-  	//목록 선태하면 불러오기
+  	//목록 선택하면 불러오기
    	function detailwriteView(bno){
    		//ajax 데이터 통신
 		$.ajax({ 
@@ -252,7 +252,32 @@
     }
    	
    	function login(){
+   		var idchk = $("#inputEmail3").val();
+   		var passchk = $("#inputPassword3").val();
+
+   		if(idchk==''){
+   			alert('ID를 입력해주세요');
+   			return false;
+   		}
+   		if(passchk==''){
+   			alert('비밀번호를 입력해주세요');
+   			return false;
+   		}
    		
+   		$.ajax({ 
+			type: 'POST',
+			url : 'login',
+			data: {
+				   "member_id"    	 : idchk,
+				   "password"		: passchk
+			},
+			success : function(data) { 
+				console.log(data);
+			} 
+			/* error: function(jqXHR, textStatus, errorThrown) {
+				console.log(jqXHR.responseText);
+			} */ 
+		});
    	}
 </script>
 	<body>
@@ -264,7 +289,7 @@
 							<tr>
 								<td>
 									<input id="bno" type="hidden" value="${list.bno}"/>
-									<img onclick="detailwriteView(${list.bno});" style="cursor:hand" src="${pageContext.request.contextPath}/resources/image/${list.filepath}.png" width="100%" height="30%"/>
+									<img onclick="detailwriteView(${list.bno});" style="cursor:hand" src="${pageContext.request.contextPath}/resources/image/${list.filepath}" width="100%" height="30%"/>
 									<hr />
 								</td>
 							</tr>
@@ -288,18 +313,20 @@
 				        <div class="pop-container">
 				            <div class="pop-conts">
 				                <!--로그인 화면 //-->
-								<div class="form-group">
-									<label for="ID" class="col-sm-2 control-label">ID</label>
-									<div class="col-sm-10">
-									<input type="text" class="form-control" id="inputEmail3" placeholder="아이디">
+				                <form action="login" >
+									<div class="form-group">
+										<label for="ID" class="col-sm-2 control-label">ID</label>
+										<div class="col-sm-10">
+										<input type="text" class="form-control" id="inputEmail3" placeholder="아이디">
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<label for="inputPassword3" class="col-sm-2 control-label">Password</label>
-									<div class="col-sm-10">
-									<input type="password" class="form-control" id="inputPassword3" placeholder="비밀번호">
+									<div class="form-group">
+										<label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+										<div class="col-sm-10">
+										<input type="password" class="form-control" id="inputPassword3" placeholder="비밀번호">
+										</div>
 									</div>
-								</div>
+								</form>
 				                <div class="btn-r">
 				                	<a href="#" id="btn-singup" class="btn btn-primary" onClick="location.href='signUp'">회원가입</a>
 				                	<a href="#" class="btn btn-primary" onclick="login()">로그인</a>
@@ -332,7 +359,7 @@
 									</td>
 									<td>
 										
-										<textarea id="inputs2" class="form-control" cols = "70" rows = "10" name="content2" maxlength="310">테스트</textarea>
+										<textarea id="inputs2" class="form-control" cols = "70" rows = "10" name="content2" maxlength="310" >테스트</textarea>
 									</td>
 								</tr>
 									<input type="hidden" id="writer" name="writer" value="테스트"/>
