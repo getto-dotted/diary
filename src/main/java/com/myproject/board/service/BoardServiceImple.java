@@ -27,8 +27,14 @@ public class BoardServiceImple implements BoardService{
 	}
 	
 	//게시글 조회
-	/*
-	 * public List<BoardVO> detaillist(String bno) throws Exception{ return
-	 * dao.detaillist(bno); }
-	 */
+	
+	public List<BoardVO> detaillist(String bno) throws Exception{ 
+		return	dao.detaillist(bno); 
+	}
+	
+	//게시글 수정
+	public List<BoardVO> update(BoardVO boardVO) throws Exception{
+		return dao.update(boardVO);
+	}
+	 
 }

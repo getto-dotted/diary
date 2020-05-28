@@ -13,5 +13,8 @@ public interface BoardDao{
 	public List<BoardVO> list(BoardVO boardVO) throws Exception;
 	
 	//목록 선택하여 내용 조회
-	//public List<BoardVO> detaillist(String bno) throws Exception;
+	public List<BoardVO> detaillist(String bno) throws Exception;
+	
+	//게시글 수정
+	public List<BoardVO> update(BoardVO boardVO) throws Exception;
 }

@@ -9,19 +9,24 @@ public class BoardVO{
 	private String content;
 	private String writer;
 	private String filepath;
+	private Date write_date;
 	private Date regdate;
 	
 	public BoardVO() {	}
 	
-	public BoardVO(int bno, String title, String content, String writer, String filepath, Date regdate) {
+	public BoardVO(int bno, String title, String content, String writer, String filepath, Date write_date,
+			Date regdate) {
 		super();
 		this.bno = bno;
 		this.title = title;
 		this.content = content;
 		this.writer = writer;
 		this.filepath = filepath;
+		this.write_date = write_date;
 		this.regdate = regdate;
 	}
+
+
 
 	public int getBno() {
 		return bno;
@@ -69,6 +74,15 @@ public class BoardVO{
 
 	public void setRegdate(Date regdate) {
 		this.regdate = regdate;
+	}
+	
+
+	public Date getWrite_date() {
+		return write_date;
+	}
+
+	public void setWrite_date(Date write_date) {
+		this.write_date = write_date;
 	}
 
 	@Override

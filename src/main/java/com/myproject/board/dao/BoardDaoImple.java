@@ -26,8 +26,13 @@ public class BoardDaoImple implements BoardDao{
 	}
 	
 	// 게시글 조회
-	/*
-	 * public List<BoardVo> detaillist(String bno) throws Exception{ return
-	 * sqlSession.DetailList("BoardMapper.list"); }
-	 */
+	
+	public List<BoardVO> detaillist(String bno) throws Exception{ 
+		return	sqlSession.selectList("BoardMapper.DetailList", bno); 
+	}
+
+	//게시글 수정
+	public List<BoardVO> update(BoardVO boardVO) throws Exception{
+		return sqlSession.selectList("BoardMapper.update", boardVO);
+	}
 }

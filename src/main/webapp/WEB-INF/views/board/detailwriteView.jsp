@@ -165,17 +165,10 @@
 		var imgSourceChk = imgSrcMake();
 
 		if(imgSourceChk != ""){
-			//content 내용 합치기
-   			var contentValue1 = $('#inputs1').val();
-   			var contentValue2 = $('#inputs2').val();
-   			var contentTotal = contentValue1 + contentValue2;
-   			
-   			if($("#datepicker").val() == ""){
-   				alert("날짜를 입력하세요.");
-   				return false
-   			}
-			
-   			if(contentTotal == ""){//텍스트에리어에 테스트가 적혀있어서 작동하지 않는다.
+   			var contentValue = $('#inputs1').val();
+   			var bno = $('#bno').val();
+   						
+   			if(contentValue == ""){//텍스트에리어에 테스트가 적혀있어서 작동하지 않는다.
    				alert("내용을 적어주세요.");
    				return false;
    			}
@@ -183,12 +176,10 @@
    			//ajax 데이터 통신
    			$.ajax({ 
    				type: 'POST',
-   				url : 'write',
+   				url : 'update',
    				data: {
-   					   "title"    	 : $("#datepicker").val(),
-   					   "content" 	 : contentTotal,
-   					   "writer"  	 : $("#writer").val(),
-   					   "filepathurl" : $("#imgSrc").val()				   
+					   "content" 	 : contentValue	
+					   "bno" : bno
    				},
    				success : function(data) { 
    					console.log(data);
@@ -205,7 +196,7 @@
    		//ajax 데이터 통신
 		$.ajax({ 
 			type: 'POST',
-			url : 'detailwriteView?bno='+bno,
+			url : 'detailwriteView',
 			data: {
 				   "bno"    	 : bno	   
 			},
@@ -297,7 +288,9 @@
 							<tr>
 								<td>
 									<input id="bno" type="hidden" value="${list.bno}"/>
-									<a href="detailwriteView?bno=${list.bno}"><img onclick="detailwriteView(${list.bno});" style="cursor:hand" src="${pageContext.request.contextPath}/resources/image/${list.filepath}" width="100%" height="30%"/></a>
+									<a href="detailwriteView?bno=${list.bno}">
+									<img onclick="detailwriteView(${list.bno});" style="cursor:hand" 
+									src="${pageContext.request.contextPath}/resources/image/${list.filepath}" width="100%" height="30%"/></a>
 									<hr />
 								</td>
 							</tr>
@@ -364,27 +357,35 @@
 				<hr />
 				<section id="container">
 					<form role="form">
+					 
 						<table style="width: 100%">
 							<tbody>
+							
 								<tr>
 									<td>
 										<label for="content">내용</label>
 									</td>
 									<td>
 										<div id="styledatepicker">
-											<input id="datepicker" width="120"/>
+										<c:forEach items="${list2}" var = "list2">
+												<input type="text" value="${list2.write_date }" readonly/>
+												<input type="hidden" id="bno" name="bno" value="${list2.bno }"/>
+												</c:forEach> 
+											<!-- <input id="datepicker" width="120"/> 
+												수정시에는 날짜선택불가
+											-->
 										</div>
 									</td>
 								</tr>
 								<tr>
 									<td>
-										<textarea id="inputs1" class="form-control"  cols = "70" rows = "10" name="content1" maxlength="310">테스트</textarea>
+										<textarea id="inputs1" class="form-control"  cols = "140" rows = "10" name="content1" maxlength="700"><c:forEach items="${list2}" var = "list2">
+												${list2.content }
+												</c:forEach> </textarea>
 									</td>
-									<td>
-										
-										<textarea id="inputs2" class="form-control" cols = "70" rows = "10" name="content2" maxlength="310" >테스트</textarea>
-									</td>
+									
 								</tr>
+								
 									<input type="hidden" id="writer" name="writer" value="${sessionScope.userid }"/>
 								<tr>
 									<td>
@@ -400,6 +401,7 @@
 								</tr>			
 							</tbody>			
 						</table>
+						 
 					</form>
 				</section>
 				<hr />

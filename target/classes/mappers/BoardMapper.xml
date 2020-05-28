@@ -30,13 +30,16 @@
 	  	ORDER BY BNO DESC	  	
    </select>
    <!--  왼쪽 게시글 본문으로 보내기 content미포함? *로 전체선택하는게 낫지 않을까?-->
-   <select id="DeatilList" resultType="com.myproject.board.vo.BoardVO">
-   		SELECT   BNO
-			   , WRITE_DATE
-			   , WRITER
-			   , FILEPATH
-			   , REGDATE			   
+   <select id="DetailList" resultType="com.myproject.board.vo.BoardVO">
+   		SELECT  *		   
 	  	FROM MP_BOARD
 	  	WHERE bno = #{bno}
    </select>
+   
+   <update id="update">
+   	UPDATE MP_BOARD SET   content   = #{content},
+						  regdate   = sysdate
+		WHERE bno = #{bno}
+   </update>
+   
 </mapper>

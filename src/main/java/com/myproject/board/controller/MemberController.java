@@ -51,6 +51,7 @@ public class MemberController {
 	public String logout(HttpSession session) {
 		//세션영역을 비운 후 메인페이지로 이동한다.
 		session.setAttribute("username", null);
+		session.setAttribute("userid", null);
 		return "redirect:/";
 	}
 	// 로그인

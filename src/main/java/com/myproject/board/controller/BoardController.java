@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.apache.commons.codec.binary.Base64;
 
 import java.io.FileOutputStream;
+import java.lang.ProcessBuilder.Redirect;
 
 import com.myproject.board.service.BoardService;
 import com.myproject.board.vo.BoardVO;
@@ -79,19 +80,47 @@ public class BoardController {
 		return mv;
 	}
 
-	/*
-	 * @RequestMapping(value = "detailwriteView") public ModelAndView
-	 * DetailWrite(BoardVO VO, HttpServletRequest request) throws Exception {
-	 * ModelAndView mv = new ModelAndView();
-	 * 
-	 * String bno = request.getParameter("bno");
-	 * 
-	 * service.detaillist(bno);
-	 * 
-	 * mv.setViewName("board/writeView");
-	 * 
-	 * return mv; }
-	 */
+	@RequestMapping(value = "update")
+	public String modify(BoardVO VO, HttpServletRequest req, HttpSession se)throws Exception{
+		
+		String bno1 = req.getParameter("bno");
+		String content = req.getParameter("content");
+		
+		int bno = Integer.parseInt(bno1);
+		
+		VO.setBno(bno);
+		VO.setContent(content);
+		
+		List<BoardVO> list = service.update(VO);
+		
+		return "/detailwriteView?bno="+bno;
+	}
+	
+	 @RequestMapping(value = "/detailwriteView") 
+	 public ModelAndView DetailWrite(BoardVO VO, HttpServletRequest request, HttpSession se) 
+			 throws Exception {
+	 
+	 ModelAndView mv = new ModelAndView();
+	 
+	 if(se.getAttribute("userid")==null) {
+		 mv.setViewName("redirect:/");
+		 
+		 return mv; 
+	 }
+	 
+	 String bno = request.getParameter("bno");
+	 List<BoardVO> list = service.detaillist(bno);
+	 
+	 VO.setWriter((String)se.getAttribute("userid"));
+	 List<BoardVO> list2 = service.list(VO);
+	 
+	 mv.addObject("list2", list);
+	 mv.addObject("list", list2);
+	 mv.setViewName("detailwriteView");
+	 
+	 return mv; 
+	 }
+	 
 
 	public String filepath(String filepathurl) throws Exception {
 		String binaryData = filepathurl;
