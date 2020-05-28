@@ -273,6 +273,7 @@
 			},
 			success : function(data) { 
 				console.log(data);
+				location.reload();
 			} 
 			/* error: function(jqXHR, textStatus, errorThrown) {
 				console.log(jqXHR.responseText);
@@ -285,7 +286,13 @@
 			<div class="alert alert-warning" role="alert">
 				<section id = "container">
 					<table>
-						<c:forEach items="${list}" var = "list">
+					<c:choose>
+					<c:when test="${empty sessionScope.username }">
+						<h3>로그인필요</h3>
+					</c:when>
+					
+					<c:otherwise>
+								<c:forEach items="${list}" var = "list">
 							<tr>
 								<td>
 									<input id="bno" type="hidden" value="${list.bno}"/>
@@ -293,7 +300,10 @@
 									<hr />
 								</td>
 							</tr>
-						</c:forEach>
+						</c:forEach>			
+					</c:otherwise>
+				</c:choose>	
+						
 					</table>
 				</section>
 			</div>
@@ -305,7 +315,16 @@
 					<h1> 일기장 </h1>
 				</header>
 				<div align="right">
-					<a href="#layer2" id="loginbtn" class="btn btn-primary" >로그인</a>
+				<c:choose>
+					<c:when test="${empty sessionScope.username }">
+						<a href="#layer2" id="loginbtn" class="btn btn-primary" >로그인</a>
+					</c:when>
+					
+					<c:otherwise>
+						<a href="logout" id="loginbtn" class="btn btn-primary" >로그아웃</a>					
+					</c:otherwise>
+				</c:choose>	
+					
 				</div>
 				<div class="dim-layer">
 				    <div class="dimBg"></div>
@@ -327,6 +346,9 @@
 										</div>
 									</div>
 								</form>
+								<c:forEach items="${name}" var = "name">
+								<input type="text" value="${name }"/>
+								</c:forEach>
 				                <div class="btn-r">
 				                	<a href="#" id="btn-singup" class="btn btn-primary" onClick="location.href='signUp'">회원가입</a>
 				                	<a href="#" class="btn btn-primary" onclick="login()">로그인</a>
@@ -362,12 +384,17 @@
 										<textarea id="inputs2" class="form-control" cols = "70" rows = "10" name="content2" maxlength="310" >테스트</textarea>
 									</td>
 								</tr>
-									<input type="hidden" id="writer" name="writer" value="테스트"/>
+									<input type="hidden" id="writer" name="writer" value="${sessionScope.userid }"/>
 								<tr>
 									<td>
 									</td>
-									<td align="right">						
-										<button class="btn btn-primary" type="button" onclick="sumcontent()">작성</button>
+									<td align="right">		
+									<c:choose>
+										<c:when test="${empty sessionScope.username }"></c:when>					
+										<c:otherwise>
+											<button class="btn btn-primary" type="button" onclick="sumcontent()">작성</button>					
+										</c:otherwise>
+									</c:choose>															
 									</td>
 								</tr>			
 							</tbody>			

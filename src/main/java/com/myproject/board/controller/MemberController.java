@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,40 +41,54 @@ public class MemberController {
 
 		service.save(vo);
 
-		mv.setViewName("writeView");
+		mv.setViewName("redirect:/");
 
 		return mv;
 	}
 
+	//로그아웃
+	@RequestMapping(value = "logout")
+	public String logout(HttpSession session) {
+		//세션영역을 비운 후 메인페이지로 이동한다.
+		session.setAttribute("username", null);
+		return "redirect:/";
+	}
 	// 로그인
 	@RequestMapping(value = "login")
-	public ModelAndView loginMember(HttpServletRequest request) throws Exception {
+	public ModelAndView loginMember(HttpServletRequest request, HttpSession session) throws Exception {
 		ModelAndView mv = new ModelAndView();
 
 		MemberVO vo = new MemberVO();
 
 		vo.setMember_id(request.getParameter("member_id"));
 		vo.setPassword(request.getParameter("password"));
+		
+		int memberChk = service.isMember(vo);
+		
+		if(memberChk>0) {
+			List<MemberVO> list = service.login(vo);
+			
+			String username = "";
+			String userid = "";
+			
+			for(MemberVO name:list) {
+				username = name.getName();
+				userid = name.getMember_id();
+			}
+			//세션영역에 유저이름 입력/ 아이디도 필요하게 될것 같은데../그러하다
+			session.setAttribute("username", username);
+			session.setAttribute("userid", userid);
 
-		List<MemberVO> list = service.login(vo);
-		if (list == null) {
-			// 로그인에 실패한 경우
-			mv.addObject("LoginNg", "아이디/패스워드가 틀렸습니다.");
-
-			mv.setViewName("redirect:/save");
-			System.out.println("로그인 실패");
-
-		} else {
-
-			System.out.println("로그인 성공");
+			mv.addObject(list); 
 			mv.setViewName("redirect:/");
 
 		}
+		else {
+			String errorMsg = "존재하지 않는 회원입니다.";
+			System.out.println(errorMsg);
+			mv.addObject(errorMsg);
+		}
 		
-		mv.addObject(list); 
-		mv.setViewName("redirect:writeView");
-		 
-
 		return mv;
 	}
 }

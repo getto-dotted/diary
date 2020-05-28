@@ -11,6 +11,7 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	
+	
 	<!-- 오라클 접속 -->
     <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
         <property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>

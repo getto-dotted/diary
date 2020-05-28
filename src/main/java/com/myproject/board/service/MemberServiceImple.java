@@ -35,4 +35,9 @@ public class MemberServiceImple implements MemberService{
 	public List<MemberVO> login(MemberVO memberVO) throws Exception{
 		return dao.login(memberVO);
 	}
+	
+	//회원조회
+	public int isMember(MemberVO memberVO) throws Exception{
+		return dao.isMember(memberVO);
+	}
 }

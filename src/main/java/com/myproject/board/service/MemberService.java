@@ -18,4 +18,7 @@ public interface MemberService{
 	//로그인
 	public List<MemberVO> login(MemberVO memberVO) throws Exception;
 	
+	//회원조회
+	public int isMember(MemberVO memberVO) throws Exception;
+	
 }

@@ -16,4 +16,7 @@ public interface MemberDao{
 	
 	//로그인
 	public List<MemberVO> login(MemberVO membervo) throws Exception;
+	
+	//회원조회
+	public int isMember(MemberVO memberVO) throws Exception;
 }

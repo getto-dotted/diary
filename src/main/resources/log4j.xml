@@ -10,6 +10,8 @@
 		</layout>
 	</appender>
 	
+	
+	
 	<!-- Application Loggers -->
 	<logger name="com.myproject.board">
 		<level value="info" />

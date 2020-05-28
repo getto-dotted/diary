@@ -46,9 +46,18 @@
 	</delete>
 	<!-- 로그인 -->
 	<select id="login" resultType="com.myproject.board.vo.MemberVO">
-		SELECT member_id, name, secession 
+		SELECT *
 		  FROM signup 
 		 WHERE member_id = #{member_id} 
 		   AND password = #{password}
+	</select>
+	
+	<!-- 멤버조회 -->
+	<select id="isMember" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		  FROM signup 
+		 WHERE member_id = #{member_id} 
+		   AND password = #{password}
+		   AND secession = '1'
 	</select>
 </mapper>

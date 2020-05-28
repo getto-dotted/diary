@@ -3,6 +3,7 @@ package com.myproject.board.controller;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +29,9 @@ public class BoardController {
 
 	// 게시판 글 화면 진입
 	@RequestMapping(value = "/")
-	public ModelAndView writeView(BoardVO boardVO) throws Exception {
+	public ModelAndView writeView(BoardVO boardVO, HttpSession se) throws Exception {
 		ModelAndView mv = new ModelAndView();
-
+		
 		List<BoardVO> list = service.list();
 
 		mv.addObject("list", list);

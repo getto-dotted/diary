@@ -35,6 +35,11 @@ public class MemberDaoImple implements MemberDao{
 	//로그인
 	@Override
 	public List<MemberVO> login(MemberVO memberVO) throws Exception{ 
-		return sqlSession.selectList("MemberMapper.login");  
+		return sqlSession.selectList("MemberMapper.login",memberVO);  
+	}
+	
+	//회원조회
+	public int isMember(MemberVO memberVO) throws Exception{
+		return sqlSession.selectOne("MemberMapper.isMember", memberVO);
 	}
 }
