@@ -21,8 +21,8 @@ public class BoardDaoImple implements BoardDao{
 	}
 	
 	// 게시글 조회
-	public List<BoardVO> list() throws Exception{
-		return sqlSession.selectList("BoardMapper.list");
+	public List<BoardVO> list(BoardVO boardVO) throws Exception{
+		return sqlSession.selectList("BoardMapper.list", boardVO);
 	}
 	
 	// 게시글 조회

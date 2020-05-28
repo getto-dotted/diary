@@ -22,8 +22,8 @@ public class BoardServiceImple implements BoardService{
 	}
 	
 	//게시글 조회
-	public List<BoardVO> list() throws Exception{
-		return dao.list();
+	public List<BoardVO> list(BoardVO boardVO) throws Exception{
+		return dao.list(boardVO);
 	}
 	
 	//게시글 조회

@@ -32,7 +32,11 @@ public class BoardController {
 	public ModelAndView writeView(BoardVO boardVO, HttpSession se) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		
-		List<BoardVO> list = service.list();
+		if(se.getAttribute("userid")!=null) {
+			boardVO.setWriter((String)se.getAttribute("userid"));
+		}
+		
+		List<BoardVO> list = service.list(boardVO);
 
 		mv.addObject("list", list);
 		mv.setViewName("writeView");

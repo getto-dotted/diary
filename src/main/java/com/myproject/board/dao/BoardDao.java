@@ -10,7 +10,7 @@ public interface BoardDao{
 	public void write(BoardVO boardVO) throws Exception;
 	
 	//게시글 조회
-	public List<BoardVO> list() throws Exception;
+	public List<BoardVO> list(BoardVO boardVO) throws Exception;
 	
 	//목록 선택하여 내용 조회
 	//public List<BoardVO> detaillist(String bno) throws Exception;
