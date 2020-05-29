@@ -13,4 +13,6 @@ public interface BoardService{
 	public List<BoardVO> detaillist(String bno) throws Exception;
 	
 	public List<BoardVO> update(BoardVO boardVO) throws Exception;
+	
+	public List<BoardVO> delete(String bno) throws Exception;
 }

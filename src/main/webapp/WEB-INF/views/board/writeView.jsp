@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <html>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
@@ -168,14 +169,16 @@
 			//content 내용 합치기
    			var contentValue1 = $('#inputs1').val();
    			var contentValue2 = $('#inputs2').val();
-   			var contentTotal = contentValue1 + contentValue2;
+   			var addString = 'addString';
+   			var contentValue = contentValue1 + contentValue2;
+   			var contentTotal = contentValue1 + addString+ contentValue2;
    			
    			if($("#datepicker").val() == ""){
    				alert("날짜를 입력하세요.");
    				return false
    			}
 			
-   			if(contentTotal == ""){//텍스트에리어에 테스트가 적혀있어서 작동하지 않는다.
+   			if(contentValue == "" ||contentValue == "테스트테스트"){//텍스트에리어에 테스트가 적혀있어서 작동하지 않는다.
    				alert("내용을 적어주세요.");
    				return false;
    			}
@@ -191,11 +194,13 @@
    					   "filepathurl" : $("#imgSrc").val()				   
    				},
    				success : function(data) { 
+   					alert('작성되었습니다.');
    					console.log(data);
-   				} 
-   				/* error: function(jqXHR, textStatus, errorThrown) {
+   					location.reload();
+   				},
+   				error: function(jqXHR, textStatus, errorThrown) {
    					console.log(jqXHR.responseText);
-   				} */ 
+   				}
    			});
 		}
    	}
@@ -288,23 +293,25 @@
 				<section id = "container">
 					<table>
 					<c:choose>
-					<c:when test="${empty sessionScope.username }">
-						<h3>로그인필요</h3>
-					</c:when>
-					
+						<c:when test="${empty sessionScope.username }">
+							<h3>로그인필요</h3>
+						</c:when>					
 					<c:otherwise>
-								<c:forEach items="${list}" var = "list">
-							<tr>
-								<td>
-									<input id="bno" type="hidden" value="${list.bno}"/>
-									<a href="detailwriteView?bno=${list.bno}"><img onclick="detailwriteView(${list.bno});" style="cursor:hand" src="${pageContext.request.contextPath}/resources/image/${list.filepath}" width="100%" height="30%"/></a>
-									<hr />
-								</td>
-							</tr>
+						<c:forEach items="${list}" var = "list">
+						<tr>
+							<td>
+								<input id="bno" type="hidden" value="${list.bno}"/>
+								<a href="detailwriteView?bno=${list.bno}">
+								<img onclick="detailwriteView(${list.bno});" style="cursor:hand" 
+								src="${pageContext.request.contextPath}/resources/image/${list.filepath}" 
+								width="100%" height="30%"/>
+								</a>
+								<hr />
+							</td>
+						</tr>
 						</c:forEach>			
 					</c:otherwise>
-				</c:choose>	
-						
+					</c:choose>	
 					</table>
 				</section>
 			</div>
@@ -316,16 +323,15 @@
 					<h1> 일기장 </h1>
 				</header>
 				<div align="right">
-				<c:choose>
-					<c:when test="${empty sessionScope.username }">
-						<a href="#layer2" id="loginbtn" class="btn btn-primary" >로그인</a>
-					</c:when>
-					
-					<c:otherwise>
-						<a href="logout" id="loginbtn" class="btn btn-primary" >로그아웃</a>					
-					</c:otherwise>
-				</c:choose>	
-					
+					<c:choose>
+						<c:when test="${empty sessionScope.username }">
+							<a href="#layer2" id="loginbtn" class="btn btn-primary" >로그인</a>
+						</c:when>
+						<c:otherwise>
+							<a href="memberinfo" id="loginbtn" class="btn btn-secondary" >회원정보 수정</a>					
+							<a href="logout" id="loginbtn" class="btn btn-warning" >로그 아웃</a>					
+						</c:otherwise>
+					</c:choose>						
 				</div>
 				<div class="dim-layer">
 				    <div class="dimBg"></div>
@@ -347,9 +353,6 @@
 										</div>
 									</div>
 								</form>
-								<c:forEach items="${name}" var = "name">
-								<input type="text" value="${name }"/>
-								</c:forEach>
 				                <div class="btn-r">
 				                	<a href="#" id="btn-singup" class="btn btn-primary" onClick="location.href='signUp'">회원가입</a>
 				                	<a href="#" class="btn btn-primary" onclick="login()">로그인</a>
@@ -380,8 +383,7 @@
 									<td>
 										<textarea id="inputs1" class="form-control"  cols = "70" rows = "10" name="content1" maxlength="310">테스트</textarea>
 									</td>
-									<td>
-										
+									<td>										
 										<textarea id="inputs2" class="form-control" cols = "70" rows = "10" name="content2" maxlength="310" >테스트</textarea>
 									</td>
 								</tr>

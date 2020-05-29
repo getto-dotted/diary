@@ -1,32 +1,35 @@
 package com.myproject.board.controller;
 
+import java.io.FileOutputStream;
+import java.util.List;
+import java.util.UUID;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.codec.binary.Base64;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.apache.commons.codec.binary.Base64;
-
-import java.io.FileOutputStream;
-import java.lang.ProcessBuilder.Redirect;
 
 import com.myproject.board.service.BoardService;
+import com.myproject.board.service.MemberService;
 import com.myproject.board.vo.BoardVO;
-import java.util.List;
-import java.util.UUID;
+import com.myproject.board.vo.MemberVO;
 
 @Controller
 public class BoardController {
 
-	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+	//private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
 	@Inject
 	BoardService service;
+	@Inject
+	MemberService service2;
 
 	// 게시판 글 화면 진입
 	@RequestMapping(value = "/")
@@ -79,49 +82,49 @@ public class BoardController {
 
 		return mv;
 	}
-
+	
+	//게시글 수정하기
 	@RequestMapping(value = "update")
 	public String modify(BoardVO VO, HttpServletRequest req, HttpSession se)throws Exception{
 		
 		String bno1 = req.getParameter("bno");
 		String content = req.getParameter("content");
-		
 		int bno = Integer.parseInt(bno1);
 		
 		VO.setBno(bno);
 		VO.setContent(content);
 		
-		List<BoardVO> list = service.update(VO);
-		
-		return "/detailwriteView?bno="+bno;
+		service.update(VO);
+
+		return "detailwriteView";
 	}
-	
-	 @RequestMapping(value = "/detailwriteView") 
-	 public ModelAndView DetailWrite(BoardVO VO, HttpServletRequest request, HttpSession se) 
+	//게시글 상세보기
+	@RequestMapping(value = "/detailwriteView") 
+	public ModelAndView DetailWrite(BoardVO VO, HttpServletRequest request, HttpSession se) 
 			 throws Exception {
 	 
-	 ModelAndView mv = new ModelAndView();
+	ModelAndView mv = new ModelAndView();
 	 
-	 if(se.getAttribute("userid")==null) {
+	if(se.getAttribute("userid")==null) {
 		 mv.setViewName("redirect:/");
 		 
 		 return mv; 
-	 }
+	}
+	
+	String bno = request.getParameter("bno");
+	List<BoardVO> list = service.detaillist(bno);
 	 
-	 String bno = request.getParameter("bno");
-	 List<BoardVO> list = service.detaillist(bno);
+	VO.setWriter((String)se.getAttribute("userid"));
+	List<BoardVO> list2 = service.list(VO);
 	 
-	 VO.setWriter((String)se.getAttribute("userid"));
-	 List<BoardVO> list2 = service.list(VO);
+	mv.addObject("list2", list);
+	mv.addObject("list", list2);
+	mv.setViewName("detailwriteView");
 	 
-	 mv.addObject("list2", list);
-	 mv.addObject("list", list2);
-	 mv.setViewName("detailwriteView");
+	return mv; 
+	}
 	 
-	 return mv; 
-	 }
-	 
-
+	//파일경로설정
 	public String filepath(String filepathurl) throws Exception {
 		String binaryData = filepathurl;
 		String savefile = null;
@@ -152,6 +155,35 @@ public class BoardController {
 		return savefile;
 	}
 
+	//게시글 삭제하기
+	@RequestMapping(value="delete")
+	public ModelAndView delete(ModelAndView mv, BoardVO vo, HttpServletRequest req, HttpSession se) throws Exception {
+		
+		mv.setViewName("redirect:/");
+		
+		if(se.getAttribute("userid")==null) {
+			return mv;
+		}
+		
+		String bno = req.getParameter("bno");
+		List<BoardVO> list = service.detaillist(bno);
+		
+		int dbBno = 0;
+		for(BoardVO dto:list) {
+			dbBno = dto.getBno();
+		}
+		
+		int bno2 = Integer.parseInt(bno);
+		
+		if(dbBno == bno2) {			
+			service.delete(bno);			
+			return mv;
+		}		
+		
+		return mv;
+	}
+	
+	
 	// 회원가입 페이지 이동
 	@RequestMapping(value = "signUp")
 	public ModelAndView signup() throws Exception {
@@ -159,6 +191,30 @@ public class BoardController {
 
 		mv.setViewName("signUp");
 
+		return mv;
+	}
+	
+	//회원정보 수정 페이지 이동
+	@RequestMapping(value = "memberinfo")
+	public ModelAndView memberinfo(ModelAndView mv, MemberVO vo, HttpServletRequest req, HttpSession se) throws Exception {
+		
+		String member_id = "";
+		
+		if(se.getAttribute("userid") != null) {
+			member_id = (String) se.getAttribute("userid");
+			
+		}
+		else {
+			mv.setViewName("redirect:/");
+		}
+		
+		vo.setMember_id(member_id);
+		
+		List<MemberVO> list = service2.memberinfo(vo);
+		
+		mv.addObject("list", list);
+		mv.setViewName("memberinfo");
+		
 		return mv;
 	}
 }

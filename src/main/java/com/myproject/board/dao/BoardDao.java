@@ -17,4 +17,7 @@ public interface BoardDao{
 	
 	//게시글 수정
 	public List<BoardVO> update(BoardVO boardVO) throws Exception;
+	
+	//게시글 삭제
+	public List<BoardVO> delete(String bno) throws Exception;
 }

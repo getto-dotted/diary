@@ -40,16 +40,30 @@
 		WHERE member_id = #{member_id}
 	</update>
 	<!-- 회원탈퇴 -->
-	<delete id="delete">
-		UPDATE signup SET secession = '3'
+	<update id="delete">
+		UPDATE signup SET secession = 3
 		WHERE member_id = #{member_id}
-	</delete>
+	</update>
 	<!-- 로그인 -->
 	<select id="login" resultType="com.myproject.board.vo.MemberVO">
 		SELECT *
 		  FROM signup 
 		 WHERE member_id = #{member_id} 
 		   AND password = #{password}
+	</select>
+	
+	<!-- 회원정보조회 -->
+	<select id="memberinfo" resultType="com.myproject.board.vo.MemberVO">
+		SELECT 				
+				member_id,
+				name,
+				gender,
+				birth,
+				mail,
+				phone,
+				address
+		  FROM signup 
+		 WHERE member_id = #{member_id}
 	</select>
 	
 	<!-- 멤버조회 -->

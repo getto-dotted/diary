@@ -37,9 +37,13 @@
    </select>
    
    <update id="update">
-   	UPDATE MP_BOARD SET   content   = #{content},
+   		UPDATE MP_BOARD SET   content   = #{content},
 						  regdate   = sysdate
 		WHERE bno = #{bno}
    </update>
+   
+   <delete id="delete">
+   		DELETE FROM MP_BOARD WHERE bno = #{bno}
+   </delete>
    
 </mapper>

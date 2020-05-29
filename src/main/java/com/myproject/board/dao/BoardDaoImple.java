@@ -35,4 +35,9 @@ public class BoardDaoImple implements BoardDao{
 	public List<BoardVO> update(BoardVO boardVO) throws Exception{
 		return sqlSession.selectList("BoardMapper.update", boardVO);
 	}
+	
+	//게시글 삭제
+	public List<BoardVO> delete(String bno) throws Exception{
+		return sqlSession.selectList("BoardMapper.delete", bno);
+	}
 }

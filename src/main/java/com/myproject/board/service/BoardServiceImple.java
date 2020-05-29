@@ -36,5 +36,9 @@ public class BoardServiceImple implements BoardService{
 	public List<BoardVO> update(BoardVO boardVO) throws Exception{
 		return dao.update(boardVO);
 	}
+	//게시글 삭제
+	public List<BoardVO> delete(String bno) throws Exception{
+		return dao.delete(bno);
+	}
 	 
 }

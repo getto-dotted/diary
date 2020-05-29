@@ -13,7 +13,7 @@ public interface MemberService{
 	public int update(MemberVO memberVO) throws Exception;
 	
 	//회원탈퇴
-	public int delete(String member_no) throws Exception;
+	public int delete(MemberVO memberVO) throws Exception;
 	
 	//로그인
 	public List<MemberVO> login(MemberVO memberVO) throws Exception;
@@ -21,4 +21,6 @@ public interface MemberService{
 	//회원조회
 	public int isMember(MemberVO memberVO) throws Exception;
 	
+	//회원정보조회
+	public List<MemberVO> memberinfo(MemberVO memberVO) throws Exception;
 }

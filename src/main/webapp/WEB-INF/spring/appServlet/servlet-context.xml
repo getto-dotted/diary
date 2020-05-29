@@ -17,6 +17,7 @@
 	
 	<!-- image 파일 경로 찾기 위해 추가 -->
 	<resources mapping="/resources/image/**" location="/resources/image/" />
+	<resources mapping="/image/**" location="/resources/image/" />
 	
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

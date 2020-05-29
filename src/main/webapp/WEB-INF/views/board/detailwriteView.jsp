@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <html>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
@@ -163,12 +164,17 @@
    	function sumcontent(){
    		
 		var imgSourceChk = imgSrcMake();
+		
 
 		if(imgSourceChk != ""){
-   			var contentValue = $('#inputs1').val();
+   			var contentValue1 = $('#inputs1').val();
+   			var contentValue2 = $('#inputs2').val();
+   			var addString = 'addString';
+   			var contentValue = contentValue1 + contentValue2;
+   			var contentTotal = contentValue1 + addString+ contentValue2;
    			var bno = $('#bno').val();
    						
-   			if(contentValue == ""){//텍스트에리어에 테스트가 적혀있어서 작동하지 않는다.
+   			if(contentValue == "" || contentValue == "테스트테스트" ){//텍스트에리어에 테스트가 적혀있어서 작동하지 않는다.
    				alert("내용을 적어주세요.");
    				return false;
    			}
@@ -178,11 +184,12 @@
    				type: 'POST',
    				url : 'update',
    				data: {
-					   "content" 	 : contentValue	
+					   "content" 	 : contentTotal,	
 					   "bno" : bno
    				},
    				success : function(data) { 
    					console.log(data);
+   					alert('수정되었습니다.');
    				} 
    				/* error: function(jqXHR, textStatus, errorThrown) {
    					console.log(jqXHR.responseText);
@@ -242,6 +249,25 @@
         });
     }
    	
+   	function deleteBoard(bno){
+   		var delchk = confirm('삭제하시겠습니까?');
+   		if(delchk == true){
+   			$.ajax({ 
+   				type: 'POST',
+   				url : 'delete',
+   				data: {
+   					   "bno"    	 : bno
+   				},
+   				success : function(data) { 
+   					console.log(data);
+   					alert("삭제되었습니다.");
+   					location.reload();
+   					/* ajax를 썼는데 새로고침을 해야할까...? */
+   				}
+   			});
+   		}
+   	}
+   	
    	function login(){
    		var idchk = $("#inputEmail3").val();
    		var passchk = $("#inputPassword3").val();
@@ -274,6 +300,9 @@
    	}
 </script>
 	<body>
+		<c:forEach items="${list2}" var = "list2">
+		<c:set var="bno2" value="${list2.bno }"/>
+		</c:forEach>
 		<div class="leftroot">
 			<div class="alert alert-warning" role="alert">
 				<section id = "container">
@@ -284,20 +313,23 @@
 					</c:when>
 					
 					<c:otherwise>
-								<c:forEach items="${list}" var = "list">
+						<c:forEach items="${list}" var = "list">
+						<c:set var="bno1" value="${list.bno }"/>												
 							<tr>
-								<td>
+								<td <c:if test="${bno1==bno2 }">style="border:1px red solid;"</c:if>>
 									<input id="bno" type="hidden" value="${list.bno}"/>
 									<a href="detailwriteView?bno=${list.bno}">
-									<img onclick="detailwriteView(${list.bno});" style="cursor:hand" 
-									src="${pageContext.request.contextPath}/resources/image/${list.filepath}" width="100%" height="30%"/></a>
+										<img onclick="detailwriteView(${list.bno});" style="cursor:hand" 
+										src="${pageContext.request.contextPath}/resources/image/${list.filepath}" 
+										width="100%" height="30%"/>
+									</a>
 									<hr />
 								</td>
 							</tr>
+						
 						</c:forEach>			
 					</c:otherwise>
-				</c:choose>	
-						
+				</c:choose>						
 					</table>
 				</section>
 			</div>
@@ -315,7 +347,10 @@
 					</c:when>
 					
 					<c:otherwise>
-						<a href="logout" id="loginbtn" class="btn btn-primary" >로그아웃</a>					
+						<a href="${pageContext.request.contextPath}" id="loginbtn" class="btn btn-primary" >새 글작성</a>					
+						<br />
+						<a href="memberinfo" id="loginbtn" class="btn btn-secondary" >회원정보 수정</a>					
+						<a href="logout" id="loginbtn" class="btn btn-warning" >로그 아웃</a>					
 					</c:otherwise>
 				</c:choose>	
 					
@@ -340,9 +375,6 @@
 										</div>
 									</div>
 								</form>
-								<c:forEach items="${name}" var = "name">
-								<input type="text" value="${name }"/>
-								</c:forEach>
 				                <div class="btn-r">
 				                	<a href="#" id="btn-singup" class="btn btn-primary" onClick="location.href='signUp'">회원가입</a>
 				                	<a href="#" class="btn btn-primary" onclick="login()">로그인</a>
@@ -356,8 +388,7 @@
 				<hr />
 				<hr />
 				<section id="container">
-					<form role="form">
-					 
+					<form role="form">					 
 						<table style="width: 100%">
 							<tbody>
 							
@@ -368,7 +399,8 @@
 									<td>
 										<div id="styledatepicker">
 										<c:forEach items="${list2}" var = "list2">
-												<input type="text" value="${list2.write_date }" readonly/>
+												<c:set var="content1" value="${list2.content }"/>
+												<input type="text" value="작성일 : ${list2.write_date }" readonly/>
 												<input type="hidden" id="bno" name="bno" value="${list2.bno }"/>
 												</c:forEach> 
 											<!-- <input id="datepicker" width="120"/> 
@@ -379,13 +411,12 @@
 								</tr>
 								<tr>
 									<td>
-										<textarea id="inputs1" class="form-control"  cols = "140" rows = "10" name="content1" maxlength="700"><c:forEach items="${list2}" var = "list2">
-												${list2.content }
-												</c:forEach> </textarea>
+										<textarea id="inputs1" class="form-control"  cols = "70" rows = "10" name="content1" maxlength="310">${fn:split(content1,'addString')[0] }</textarea>
 									</td>
-									
+									<td>										
+										<textarea id="inputs2" class="form-control" cols = "70" rows = "10" name="content2" maxlength="310" >${fn:split(content1,'addString')[1] }</textarea>
+									</td>				
 								</tr>
-								
 									<input type="hidden" id="writer" name="writer" value="${sessionScope.userid }"/>
 								<tr>
 									<td>
@@ -394,14 +425,14 @@
 									<c:choose>
 										<c:when test="${empty sessionScope.username }"></c:when>					
 										<c:otherwise>
-											<button class="btn btn-primary" type="button" onclick="sumcontent()">작성</button>					
+											<button class="btn btn-primary" type="button" onclick="sumcontent()">수정완료</button>					
+											<button class="btn btn-danger" type="button" onclick="deleteBoard(${bno2})">삭제하기</button>
 										</c:otherwise>
 									</c:choose>															
 									</td>
 								</tr>			
 							</tbody>			
-						</table>
-						 
+						</table>						 
 					</form>
 				</section>
 				<hr />

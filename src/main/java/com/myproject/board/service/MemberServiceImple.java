@@ -27,8 +27,8 @@ public class MemberServiceImple implements MemberService{
 	}
 	
 	//회원정보 탈퇴
-	public int delete(String member_no) throws Exception{
-		return dao.delete(member_no);
+	public int delete(MemberVO memberVO) throws Exception{
+		return dao.delete(memberVO);
 	}
 	
 	//로그인
@@ -39,5 +39,10 @@ public class MemberServiceImple implements MemberService{
 	//회원조회
 	public int isMember(MemberVO memberVO) throws Exception{
 		return dao.isMember(memberVO);
+	}
+	
+	//회원정보조회
+	public List<MemberVO> memberinfo(MemberVO memberVO) throws Exception{ 
+		return dao.memberinfo(memberVO);  
 	}
 }
