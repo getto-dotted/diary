@@ -127,8 +127,7 @@
    /*  //처음 시작 시 content2번 막음
     $( document ).ready(function() {
     	$('#content2').prop("disabled", true);
-    });  */
-   	
+    });  */   	
    	//텍스트 넘기기
    	$(function() {
 	    $(".inputs").keyup (function () {
