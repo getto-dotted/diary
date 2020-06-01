@@ -27,7 +27,7 @@
 			   , REGDATE			
 	  	FROM MP_BOARD
 	  	WHERE WRITER = #{writer}
-	  	ORDER BY BNO DESC	  	
+	  	ORDER BY WRITE_DATE DESC	  	
    </select>
    <!--  왼쪽 게시글 본문으로 보내기 content미포함? *로 전체선택하는게 낫지 않을까?-->
    <select id="DetailList" resultType="com.myproject.board.vo.BoardVO">

@@ -41,9 +41,47 @@
 	        object.value = object.value.slice(0, object.maxLength);
 	    }
 	};
+	function frmchk(f){
+
+		if(!f.member_id.value){
+			alert("아이디를 입력하세요");
+			f.member_id.focus();
+			return false;
+		} 
+		if(!f.password1.value){
+			alert("비밀번호를 입력하세요");
+			f.password1.focus();
+			return false;
+		} 
+		if(!f.member_name.value){
+			alert("이름을 입력하세요");
+			f.member_name.focus();
+			return false;
+		} 
+		if(f.member_gender.value=="0"){
+			alert("성별을 입력하세요");
+			f.member_gender.focus();
+			return false;
+		} 
+		if(!f.member_phone.value){
+			alert("전화번호를 입력하세요");
+			f.member_phone.focus();
+			return false;
+		} 
+		var chk = document.getElementById('appendlabelpassword').innerHTML;
+		var chkword ='<br><span style="color: blue;">비밀번호 확인 완료</span>';
+		
+		if(chk!=chkword){
+			alert("비밀번호를 확인하세요");
+			f.password1.focus();
+			return false;
+		}
+		f.action="save";
+		f.method="post";	
+	};
+	
 	
 	$(document).ready(function(){
-		
 		
 		$("#member_id").bind("keyup",function(){
 			chck = /[`/?<>,.;:~!@\#$%^&*\()\-=+_"']/gi;
@@ -97,8 +135,7 @@
 					$("#appendlabelpassword").empty();
 					$("#appendlabelpassword").append('<br><span style="color: blue;">비밀번호 확인 완료</span>');
 				}
-			}
-			
+			}			
 		});
 	});
 </script>	
@@ -109,7 +146,7 @@
 				<h1> 회원가입 </h1>
 			</header>
 		</div>
-		<form role="form" action="save" method="post">
+		<form role="form" onsubmit="frmchk(this)">
 			<div id="member_form1">
 				<div class="form-group">
 					<label id="appendlabelid" for="ID">아이디</label>
@@ -156,7 +193,7 @@
 					<label for="ADDRESS">주소</label>
 					<input type="text" class="form-control" name="member_address" >
 				</div>
-				<button class="btn btn-primary" id="regbtn" type="submit" >가입하기</button>
+				<button class="btn btn-primary" id="regbtn" type="submit">가입하기</button>
 			</div>
 		</form>
 	</div>

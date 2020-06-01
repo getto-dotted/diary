@@ -49,6 +49,41 @@
 			location.href="secession";
 		}
 	};
+	
+	function frmchk(f){
+
+		if(!f.password1.value){
+			alert("비밀번호를 입력하세요");
+			f.password1.focus();
+			return false;
+		} 
+		if(!f.member_name.value){
+			alert("이름을 입력하세요");
+			f.member_name.focus();
+			return false;
+		} 
+		if(f.member_gender.value=="0"){
+			alert("성별을 입력하세요");
+			f.member_gender.focus();
+			return false;
+		} 
+		if(!f.member_phone.value){
+			alert("전화번호를 입력하세요");
+			f.member_phone.focus();
+			return false;
+		} 
+		var chk = document.getElementById('appendlabelpassword').innerHTML;
+		var chkword ='<br><span style="color: blue;">비밀번호 확인 완료</span>';
+		
+		if(chk!=chkword){
+			alert("비밀번호를 확인하세요");
+			f.password1.focus();
+			return false;
+		}
+		f.action="memberUpdate";
+		f.method="post";	
+	};
+	
 	$(document).ready(function(){
 		$("#password1").focusout(function(){
 			var chkid = $("#member_id").val();
@@ -105,7 +140,7 @@
 				<h1> 회원정보 수정/탈퇴 </h1>
 			</header>
 		</div>
-		<form role="form" action="memberUpdate" method="post">
+		<form role="form" onsubmit="frmchk(this)">
 			<div id="member_form1">
 				<c:forEach items="${list}" var = "list">
 				<div class="form-group">
