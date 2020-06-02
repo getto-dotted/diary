@@ -168,7 +168,7 @@
 			//content 내용 합치기
    			var contentValue1 = $('#inputs1').val();
    			var contentValue2 = $('#inputs2').val();
-   			var addString = 'addString';
+   			var addString = '`\\';
    			var contentValue = contentValue1 + contentValue2;
    			var contentTotal = contentValue1 + addString+ contentValue2;
    			

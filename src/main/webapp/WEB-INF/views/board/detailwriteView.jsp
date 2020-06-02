@@ -169,7 +169,7 @@
 		if(imgSourceChk != ""){
    			var contentValue1 = $('#inputs1').val();
    			var contentValue2 = $('#inputs2').val();
-   			var addString = 'addString';
+   			var addString = '`\\';
    			var contentValue = contentValue1 + contentValue2;
    			var contentTotal = contentValue1 + addString+ contentValue2;
    			var bno = $('#bno').val();
@@ -411,10 +411,10 @@
 								</tr>
 								<tr>
 									<td>
-										<textarea id="inputs1" class="form-control"  cols = "70" rows = "10" name="content1" maxlength="310">${fn:split(content1,'addString')[0] }</textarea>
+										<textarea id="inputs1" class="form-control"  cols = "70" rows = "10" name="content1" maxlength="410">${fn:split(content1,'`\\')[0] }</textarea>
 									</td>
 									<td>										
-										<textarea id="inputs2" class="form-control" cols = "70" rows = "10" name="content2" maxlength="310" >${fn:split(content1,'addString')[1] }</textarea>
+										<textarea id="inputs2" class="form-control" cols = "70" rows = "10" name="content2" maxlength="410" >${fn:split(content1,'`\\')[1] }</textarea>
 									</td>				
 								</tr>
 									<input type="hidden" id="writer" name="writer" value="${sessionScope.userid }"/>
