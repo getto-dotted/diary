@@ -164,8 +164,8 @@
 					<label for="GENDER">성별</label>
 					<select class="form-control" name="member_gender" onchange="check()">
 						<option value="0">성별</option>
-						<option value="1">남자</option>
-						<option value="2">여자</option>
+						<option value="1" ${list.gender==1 ? 'selected':'' }>남자</option>
+						<option value="2" ${list.gender==2 ? 'selected':'' }>여자</option>
 					</select>
 				</div>
 				<div class="form-group">
