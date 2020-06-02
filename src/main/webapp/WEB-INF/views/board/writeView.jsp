@@ -131,12 +131,14 @@
    	//텍스트 넘기기
    	$(function() {
 	    $(".inputs").keyup (function () {
+	    	
 	        var charLimit = $(this).attr("maxlength");
 	        if (this.value.length >= charLimit) {
 	        	  $( document ).ready(function() {//좌측 레이어로 로딩시 해당하는 옵션?
 	        	    	$('#content2').prop("disabled", false);
 	        	  }); 
 	            $("#content2").focus();
+	            alert("ddd");
 	            return false;
 	        }
 	    });
