@@ -183,7 +183,8 @@
 				</div>
 				<div class="form-group">
 					<label for="IputEmail">이메일 주소</label>
-					<input type="email" class="form-control" name="member_email" placeholder="이메일을 입력하세요">
+					<input type="email" class="form-control" name="member_email" placeholder="이메일을 입력하세요" required oninvalid="this.setCustomValidity('이메일을 입력해 주세요')" 
+oninput = "setCustomValidity('')">
 				</div>
 				<div class="form-group">
 					<label for="PHONE">핸드폰</label>
