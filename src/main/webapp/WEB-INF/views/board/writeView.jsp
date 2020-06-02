@@ -386,9 +386,9 @@
 										<textarea id="inputs2" class="form-control" cols = "70" rows = "10" name="content2" maxlength="310" >테스트</textarea>
 									</td>
 								</tr>
-									<input type="hidden" id="writer" name="writer" value="${sessionScope.userid }"/>
 								<tr>
 									<td>
+									<input type="hidden" id="writer" name="writer" value="${sessionScope.userid }"/>
 									</td>
 									<td align="right">		
 									<c:choose>

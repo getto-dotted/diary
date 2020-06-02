@@ -417,9 +417,9 @@
 										<textarea id="inputs2" class="form-control" cols = "70" rows = "10" name="content2" maxlength="410" >${fn:split(content1,'`\\')[1] }</textarea>
 									</td>				
 								</tr>
-									<input type="hidden" id="writer" name="writer" value="${sessionScope.userid }"/>
 								<tr>
 									<td>
+									<input type="hidden" id="writer" name="writer" value="${sessionScope.userid }"/>
 									</td>
 									<td align="right">		
 									<c:choose>
