@@ -1,15 +1,20 @@
 package com.myproject.board.controller;
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.net.URL;
 import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
+import org.eclipse.jdt.internal.compiler.batch.Main;
+import org.springframework.beans.factory.annotation.Autowired;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -63,12 +68,14 @@ public class BoardController {
 		// 인코딩 된 파일 경로 담을 변수 초기화
 		String filepathtrue = null;
 
+		String imagePath = request.getSession().getServletContext().getRealPath("resources/image/");
+		
 		System.out.println("title :: " + title);
 		System.out.println("content :: " + content);
 		System.out.println("writer :: " + writer);
 		System.out.println("filepathurl :: " + filepathurl);
 		// 파일 인코딩 시작
-		filepathtrue = filepath(filepathurl);
+		filepathtrue = filepath(filepathurl,imagePath);
 		System.out.println("filepathtrue :: " + filepathtrue);
 
 		boardVO.setTitle(title);
@@ -124,11 +131,15 @@ public class BoardController {
 	return mv; 
 	}
 	 
+		
 	//파일경로설정
-	public String filepath(String filepathurl) throws Exception {
+	public String filepath(String filepathurl, String imagePath) throws Exception {
 		String binaryData = filepathurl;
 		String savefile = null;
 		FileOutputStream stream = null;
+		
+		
+		
 		try {
 			System.out.println("binary file " + binaryData);
 			if (binaryData == null || binaryData == "") {
@@ -139,14 +150,18 @@ public class BoardController {
 			System.out.println("file :::::::: " + file + " || " + file.length);
 			String fileName = UUID.randomUUID().toString();
 			System.out.println("fileName :::::::: " + UUID.randomUUID().toString());
+			
 			stream = new FileOutputStream(
-					"C:\\Users\\a\\Desktop\\workspace\\Board\\src\\main\\webapp\\resources\\image\\"
-							+ fileName + ".png");
+					imagePath+fileName+".png");
 			stream.write(file);
 			stream.close();
 			savefile = fileName + ".png";
 			System.out.println("파일 작성 완료");
 			System.out.println("파일 생성 경로" + savefile);
+			
+			System.out.println("파일경로"+imagePath+fileName+".png");	
+			System.out.println(new File(imagePath+fileName+".png").exists());	
+			
 		} catch (Exception e) {
 			System.out.println("파일이 정상적으로 넘어오지 않았습니다");
 		} finally {
