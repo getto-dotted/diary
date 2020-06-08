@@ -275,11 +275,16 @@
 			url : 'login',
 			data: {
 				   "member_id"    	 : idchk,
-				   "password"		: passchk
+				   "password"		: passchk,
+				   "text1": input1,
+				   "text2": input2
 			},
 			success : function(data) { 
 				console.log(data);
-				location.reload();
+				$('.dim-layer').fadeOut();
+				
+				//$("#leftroot").load(window.location.reload());
+				//location.reload();
 				/* ajax를 썼는데 새로고침을 해야할까...? */
 			} 
 			/* error: function(jqXHR, textStatus, errorThrown) {
@@ -289,7 +294,7 @@
    	}
 </script>
 	<body>
-		<div class="leftroot">
+		<div class="leftroot" id= "leftroot">
 			<div class="alert alert-warning" role="alert">
 				<section id = "container">
 					<table>
@@ -381,11 +386,11 @@
 									</td>
 								</tr>
 								<tr>
-									<td>
-										<textarea id="inputs1" class="form-control"  cols = "70" rows = "10" name="content1" maxlength="310">테스트</textarea>
+									<td>									
+										<textarea id="inputs1" class="form-control"  cols = "70" rows = "10" name="content1" maxlength="310">테스트1</textarea>
 									</td>
 									<td>										
-										<textarea id="inputs2" class="form-control" cols = "70" rows = "10" name="content2" maxlength="310" >테스트</textarea>
+										<textarea id="inputs2" class="form-control" cols = "70" rows = "10" name="content2" maxlength="310" >테스트2</textarea>
 									</td>
 								</tr>
 								<tr>

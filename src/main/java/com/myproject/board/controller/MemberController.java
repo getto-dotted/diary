@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.myproject.board.service.BoardService;
 import com.myproject.board.service.MemberService;
+import com.myproject.board.vo.BoardVO;
 import com.myproject.board.vo.MemberVO;
 
 @Controller
@@ -18,6 +20,8 @@ public class MemberController {
 
 	@Inject
 	MemberService service;
+	@Inject
+	BoardService service2;
 
 	// 회원가입
 	@RequestMapping(value = "save")
@@ -82,6 +86,7 @@ public class MemberController {
 
 			mv.addObject(list); 
 			mv.setViewName("redirect:/");
+			 
 
 		}
 		else {
