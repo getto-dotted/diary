@@ -22,6 +22,7 @@ import com.myproject.board.service.MemberService;
 import com.myproject.board.service.TBoardService;
 import com.myproject.board.vo.BoardVO;
 import com.myproject.board.vo.MemberVO;
+import com.myproject.board.vo.TmpBoardVO;
 
 @Controller
 public class BoardController {
@@ -37,17 +38,13 @@ public class BoardController {
 
 	// 게시판 글 화면 진입
 	@RequestMapping(value = "/")
-	public ModelAndView writeView(BoardVO boardVO, HttpSession se) throws Exception {
+	public ModelAndView writeView(TmpBoardVO tmpboardVO) throws Exception {
 		ModelAndView mv = new ModelAndView();
-		
-		if(se.getAttribute("userid")!=null) {
-			boardVO.setWriter((String)se.getAttribute("userid"));
-		}
-		
-		List<BoardVO> list = service.list(boardVO);
+				
+		List<TmpBoardVO> list = service3.list(tmpboardVO);
 
 		mv.addObject("list", list);
-		mv.setViewName("writeView");
+		mv.setViewName("main");
 
 		return mv;
 	}
@@ -86,6 +83,45 @@ public class BoardController {
 
 		mv.setViewName("board/writeView");
 
+		return mv;
+	}
+	
+	// 게시판 임시저장 글 작성
+	@RequestMapping(value = "tmpwrite")
+	public ModelAndView TmpWrite(TmpBoardVO tmpboardVO, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		
+		ModelAndView mv = new ModelAndView();
+		
+		String title = "";
+		
+		if(request.getParameter("title")!=null) {
+			title = request.getParameter("title");
+		}
+		
+		String content = request.getParameter("content");
+		// 인코딩 되기 전 파일 경로
+		String filepathurl = request.getParameter("filepathurl");
+		// 인코딩 된 파일 경로 담을 변수 초기화
+		String filepathtrue = null;
+		
+		String imagePath = request.getSession().getServletContext().getRealPath("resources/image/");
+		
+		System.out.println("title :: " + title);
+		System.out.println("content :: " + content);
+		System.out.println("filepathurl :: " + filepathurl);
+		// 파일 인코딩 시작
+		filepathtrue = filepath(filepathurl,imagePath);
+		System.out.println("filepathtrue :: " + filepathtrue);
+		
+		tmpboardVO.setTitle(title);
+		tmpboardVO.setContent(content);		
+		tmpboardVO.setFilepath(filepathtrue);
+		
+		service3.write(tmpboardVO);
+		
+		mv.setViewName("redirect:/");
+		
 		return mv;
 	}
 	

@@ -173,12 +173,12 @@
    			var contentValue = contentValue1 + contentValue2;
    			var contentTotal = contentValue1 + addString+ contentValue2;
    			
-   			if($("#datepicker").val() == ""){
+   		/* 	if($("#datepicker").val() == ""){
    				alert("날짜를 입력하세요.");
    				return false
-   			}
+   			} */
 			
-   			if(contentValue == "" ||contentValue == "테스트테스트"){//텍스트에리어에 테스트가 적혀있어서 작동하지 않는다.
+   			if(contentValue == "" ||contentValue == "메인1메인2"){//텍스트에리어에 테스트가 적혀있어서 작동하지 않는다.
    				alert("내용을 적어주세요.");
    				return false;
    			}
@@ -186,21 +186,20 @@
    			//ajax 데이터 통신
    			$.ajax({ 
    				type: 'POST',
-   				url : 'write',
+   				url : 'tmpwrite',
    				data: {
    					   "title"    	 : $("#datepicker").val(),
    					   "content" 	 : contentTotal,
-   					   "writer"  	 : $("#writer").val(),
    					   "filepathurl" : $("#imgSrc").val()				   
    				},
    				success : function(data) { 
-   					alert('작성되었습니다.');
+   					alert('글이 작성되었습니다.');
    					console.log(data);
    					location.reload();
    				},
-   				error: function(jqXHR, textStatus, errorThrown) {
+   				/* error: function(jqXHR, textStatus, errorThrown) {
    					console.log(jqXHR.responseText);
-   				}
+   				} */
    			});
 		}
    	}
@@ -217,9 +216,9 @@
 			success : function(data) { 
 				console.log(data);
 			} 
-			error: function(jqXHR, textStatus, errorThrown) {
+			/* error: function(jqXHR, textStatus, errorThrown) {
 				console.log(jqXHR.responseText);
-			}
+			} */
 		});
    	}
   	
@@ -297,24 +296,24 @@
 				<section id = "container">
 					<table>
 					<c:choose>
-						<c:when test="${empty sessionScope.username }">
+						<c:when test="${empty list}">
 							<h3>임시저장된 글이 없습니다.</h3>
 						</c:when>					
-					<c:otherwise>
-						<c:forEach items="${list}" var = "list">
-						<tr>
-							<td>
-								<input id="bno" type="hidden" value="${list.bno}"/>
-								<a href="detailwriteView?bno=${list.bno}">
-								<img onclick="detailwriteView(${list.bno});" style="cursor:hand" 
-								src="${pageContext.request.contextPath}/resources/image/${list.filepath}" 
-								width="100%" height="30%"/>
-								</a>
-								<hr />
-							</td>
-						</tr>
-						</c:forEach>			
-					</c:otherwise>
+						<c:otherwise>
+							<c:forEach items="${list}" var = "list">
+							<tr>
+								<td>
+									<input id="bno" type="hidden" value="${list.bno}"/>
+									<a href="detailwriteView?bno=${list.bno}">
+									<img onclick="detailwriteView(${list.bno});" style="cursor:hand" 
+									src="${pageContext.request.contextPath}/resources/image/${list.filepath}" 
+									width="100%" height="30%"/>
+									</a>
+									<hr />
+								</td>
+							</tr>
+							</c:forEach>			
+						</c:otherwise>
 					</c:choose>	
 					</table>
 				</section>
@@ -385,23 +384,17 @@
 								</tr>
 								<tr>
 									<td>									
-										<textarea id="inputs1" class="form-control"  cols = "70" rows = "10" name="content1" maxlength="310">테스트1</textarea>
+										<textarea id="inputs1" class="form-control"  cols = "70" rows = "10" name="content1" maxlength="310">메인1</textarea>
 									</td>
 									<td>										
-										<textarea id="inputs2" class="form-control" cols = "70" rows = "10" name="content2" maxlength="310" >테스트2</textarea>
+										<textarea id="inputs2" class="form-control" cols = "70" rows = "10" name="content2" maxlength="310" >메인2</textarea>
 									</td>
 								</tr>
 								<tr>
-									<td>
-									<input type="hidden" id="writer" name="writer" value="${sessionScope.userid }"/>
+									<td>									
 									</td>
-									<td align="right">		
-									<c:choose>
-										<c:when test="${empty sessionScope.username }"></c:when>					
-										<c:otherwise>
-											<button class="btn btn-primary" type="button" onclick="sumcontent()">작성</button>					
-										</c:otherwise>
-									</c:choose>															
+									<td align="right">											
+										<button class="btn btn-primary" type="button" onclick="sumcontent()">작성</button>		
 									</td>
 								</tr>			
 							</tbody>			

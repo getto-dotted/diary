@@ -84,7 +84,7 @@ public class MemberController {
 			session.setAttribute("userid", userid);
 
 			mv.addObject(list); 
-			mv.setViewName("redirect:/");
+			mv.setViewName("writeView");
 			 
 
 		}

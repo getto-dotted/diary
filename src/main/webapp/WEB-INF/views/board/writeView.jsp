@@ -387,10 +387,10 @@
 								</tr>
 								<tr>
 									<td>									
-										<textarea id="inputs1" class="form-control"  cols = "70" rows = "10" name="content1" maxlength="310">테스트1</textarea>
+										<textarea id="inputs1" class="form-control"  cols = "70" rows = "10" name="content1" maxlength="310">글쓰기1</textarea>
 									</td>
 									<td>										
-										<textarea id="inputs2" class="form-control" cols = "70" rows = "10" name="content2" maxlength="310" >테스트2</textarea>
+										<textarea id="inputs2" class="form-control" cols = "70" rows = "10" name="content2" maxlength="310" >글쓰기2</textarea>
 									</td>
 								</tr>
 								<tr>
