@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TmpBoardMapper">
+   <!-- 게시판 글 작성 -->
+   <insert id = "insert">
+   		INSERT INTO TMP_BOARD(	BNO, 
+   								WRITE_DATE, 
+   								CONTENT,    								
+   								FILEPATH
+   							 )
+     				 VALUES (	MP_BOARD_SEQ.NEXTVAL, 
+     				 			#{title}, 
+     				 			#{content}, 
+     				 			#{writer},
+     				 			#{filepath}
+     				 		)
+   </insert>
+   <!-- 왼쪽 게시글 목록 불러오기 페이징이 안돼있는데 제한을 하는것이 낫지 않을까..?-->
+   <select id="list" resultType="com.myproject.board.vo.TmpBoardVO">
+   		SELECT  *		
+	  	FROM TMP_BOARD
+	  	ORDER BY REGDATE DESC	  	
+   </select>
+   <!--  왼쪽 게시글 본문으로 보내기 content미포함? *로 전체선택하는게 낫지 않을까?-->
+   <select id="DetailList" resultType="com.myproject.board.vo.TmpBoardVO">
+   		SELECT  *		   
+	  	FROM TMP_BOARD
+	  	WHERE bno = #{bno}
+   </select>
+   
+   <delete id="delete">
+   		DELETE FROM TMP_BOARD WHERE bno = #{bno}
+   </delete>
+   
+</mapper>

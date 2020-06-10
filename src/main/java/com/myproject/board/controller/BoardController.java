@@ -2,19 +2,15 @@ package com.myproject.board.controller;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.net.URL;
 import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
-import org.eclipse.jdt.internal.compiler.batch.Main;
-import org.springframework.beans.factory.annotation.Autowired;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -23,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.myproject.board.service.BoardService;
 import com.myproject.board.service.MemberService;
+import com.myproject.board.service.TBoardService;
 import com.myproject.board.vo.BoardVO;
 import com.myproject.board.vo.MemberVO;
 
@@ -35,6 +32,8 @@ public class BoardController {
 	BoardService service;
 	@Inject
 	MemberService service2;
+	@Inject
+	TBoardService service3;
 
 	// 게시판 글 화면 진입
 	@RequestMapping(value = "/")

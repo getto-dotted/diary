@@ -12,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.myproject.board.service.BoardService;
 import com.myproject.board.service.MemberService;
-import com.myproject.board.vo.BoardVO;
 import com.myproject.board.vo.MemberVO;
 
 @Controller
