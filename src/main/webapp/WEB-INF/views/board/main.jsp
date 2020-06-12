@@ -161,7 +161,7 @@
     }    
     
   	//데이터 등록
-   	function sumcontent(){
+   	function sumcontent(bno){
    		
 		var imgSourceChk = imgSrcMake();
 
@@ -173,15 +173,10 @@
    			var contentValue = contentValue1 + contentValue2;
    			var contentTotal = contentValue1 + addString+ contentValue2;
    			
-   		/* 	if($("#datepicker").val() == ""){
-   				alert("날짜를 입력하세요.");
-   				return false
-   			} */
-			
-   			if(contentValue == "" ||contentValue == "메인1메인2"){//텍스트에리어에 테스트가 적혀있어서 작동하지 않는다.
+   			/* if(contentValue == "" ){//require로 바꿔보자
    				alert("내용을 적어주세요.");
    				return false;
-   			}
+   			} */
    			
    			//ajax 데이터 통신
    			$.ajax({ 
@@ -190,12 +185,12 @@
    				data: {
    					   "title"    	 : $("#datepicker").val(),
    					   "content" 	 : contentTotal,
-   					   "filepathurl" : $("#imgSrc").val()				   
+   					   "filepathurl" : $("#imgSrc").val(),	
+   					   "bno":bno
    				},
    				success : function(data) { 
-   					alert('글이 작성되었습니다.');
-   					console.log(data);
-   					location.reload();
+   					alert('임시 저장되었습니다.');
+   					location.href("/");
    				},
    				/* error: function(jqXHR, textStatus, errorThrown) {
    					console.log(jqXHR.responseText);
@@ -204,12 +199,12 @@
 		}
    	}
   	
-  	//목록 선택하면 불러오기
+  	//임시저장글을 불러와야한다..
    	function detailwriteView(bno){
    		//ajax 데이터 통신
 		$.ajax({ 
 			type: 'POST',
-			url : 'detailwriteView?bno='+bno,
+			url : 'tdv',
 			data: {
 				   "bno"    	 : bno	   
 			},
@@ -218,7 +213,7 @@
 			} 
 			/* error: function(jqXHR, textStatus, errorThrown) {
 				console.log(jqXHR.responseText);
-			} */
+			} */ 
 		});
    	}
   	
@@ -254,6 +249,28 @@
             return false;
         });
     }
+
+   	function deleteBoard(bno){
+   		if(bno==null){//새임시저장에서는 동작x
+   			return false;
+   		}
+   		var delchk = confirm('삭제하시겠습니까?');
+   		if(delchk == true){
+   			$.ajax({ 
+   				type: 'POST',
+   				url : 'deleteTmp',
+   				data: {
+   					   "bno"    	 : bno
+   				},
+   				success : function(data) { 
+   					console.log(data);
+   					alert("삭제되었습니다.");
+   					location.reload();
+   					/* ajax를 썼는데 새로고침을 해야할까...? */
+   				}
+   			});
+   		}
+   	}
    	
    	function login(){
    		var idchk = $("#inputEmail3").val();
@@ -273,14 +290,12 @@
 			url : 'login',
 			data: {
 				   "member_id"    	 : idchk,
-				   "password"		: passchk,
-				   "text1": input1,
-				   "text2": input2
+				   "password"		: passchk
 			},
 			success : function(data) { 
 				console.log(data);
 				$('.dim-layer').fadeOut();	
-				sumcontent();
+				sumcontent;
 				location.reload();
 				/* ajax를 썼는데 새로고침을 해야할까...? */
 			} 
@@ -302,13 +317,13 @@
 						<c:otherwise>
 							<c:forEach items="${list}" var = "list">
 							<tr>
-								<td>
+								<td>								
 									<input id="bno" type="hidden" value="${list.bno}"/>
-									<a href="detailwriteView?bno=${list.bno}">
-									<img onclick="detailwriteView(${list.bno});" style="cursor:hand" 
-									src="${pageContext.request.contextPath}/resources/image/${list.filepath}" 
-									width="100%" height="30%"/>
-									</a>
+									<a href="tdv?bno=${list.bno}">
+										<img onclick="detailwriteView(${list.bno});" style="cursor:hand" 
+										src="${pageContext.request.contextPath}/resources/image/${list.filepath}" 
+										width="100%" height="30%"/>
+									</a>															
 									<hr />
 								</td>
 							</tr>
@@ -370,6 +385,10 @@
 				<hr />
 				<section id="container">
 					<form role="form">
+					<c:forEach items="${list2}" var = "list2">
+					<c:set var="content1" value="${list2.content }"/>
+					<c:set var="bno" value="${list2.bno }"/>
+					</c:forEach>
 						<table style="width: 100%">
 							<tbody>
 								<tr>
@@ -379,26 +398,29 @@
 									<td>
 										<div id="styledatepicker">
 											<input id="datepicker" width="120"/>
-										</div>
+										</div>									
 									</td>
-								</tr>
+								</tr>								
 								<tr>
+								
 									<td>									
-										<textarea id="inputs1" class="form-control"  cols = "70" rows = "10" name="content1" maxlength="310">메인1</textarea>
+										<textarea id="inputs1" class="form-control"  cols = "70" rows = "10" name="content1" maxlength="310" required>${fn:split(content1,'`\\')[0] }</textarea>
 									</td>
 									<td>										
-										<textarea id="inputs2" class="form-control" cols = "70" rows = "10" name="content2" maxlength="310" >메인2</textarea>
+										<textarea id="inputs2" class="form-control" cols = "70" rows = "10" name="content2" maxlength="310" required>${fn:split(content1,'`\\')[1] }</textarea>
 									</td>
 								</tr>
 								<tr>
-									<td>									
+									<td>																		
 									</td>
-									<td align="right">											
-										<button class="btn btn-primary" type="button" onclick="sumcontent()">작성</button>		
-									</td>
+									<td align="right">																														
+										<button class="btn btn-warning" type="button" onclick="sumcontent(${bno })">임시저장</button>		
+										<button class="btn btn-danger" type="button" onclick="deleteBoard(${bno })">삭제</button>		
+									</td>								
 								</tr>			
 							</tbody>			
 						</table>
+					
 					</form>
 				</section>
 				<hr />

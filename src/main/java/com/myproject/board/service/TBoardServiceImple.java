@@ -32,6 +32,11 @@ public class TBoardServiceImple implements TBoardService{
 		return	dao.detaillist(bno); 
 	}
 
+	//글작성 진입시 첫글
+	public List<TmpBoardVO> main(TmpBoardVO tmpboardVO) throws Exception{
+		return dao.main(tmpboardVO);
+	}
+
 	//게시글 삭제
 	public List<TmpBoardVO> delete(String bno) throws Exception{
 		return dao.delete(bno);

@@ -30,6 +30,10 @@ public class TBoardDaoImple implements TBoardDao{
 	public List<TmpBoardVO> detaillist(String bno) throws Exception{ 
 		return	sqlSession.selectList("TmpBoardMapper.DetailList", bno); 
 	}
+	//글작성 진입시 첫글
+	public List<TmpBoardVO> main(TmpBoardVO tmpboardVO) throws Exception{
+		return sqlSession.selectList("TmpBoardMapper.main", tmpboardVO);
+	}
 	
 	//게시글 삭제
 	public List<TmpBoardVO> delete(String bno) throws Exception{

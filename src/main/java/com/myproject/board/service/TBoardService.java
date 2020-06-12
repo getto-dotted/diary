@@ -12,5 +12,7 @@ public interface TBoardService{
 	
 	public List<TmpBoardVO> detaillist(String bno) throws Exception;
 	
+	public List<TmpBoardVO> main(TmpBoardVO tmpboardVO) throws Exception;
+
 	public List<TmpBoardVO> delete(String bno) throws Exception;
 }

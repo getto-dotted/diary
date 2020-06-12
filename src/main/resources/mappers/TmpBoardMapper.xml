@@ -29,6 +29,13 @@
 	  	WHERE bno = #{bno}
    </select>
    
+   <!--  가장 최근에 수정된 게시물을 가져온다-->
+   <select id="main" resultType="com.myproject.board.vo.TmpBoardVO">
+   		SELECT  *		   
+	  	FROM TMP_BOARD
+	  	WHERE REGDATE=(SELECT MAX(REGDATE) FROM TMP_BOARD)
+   </select>
+   
    <delete id="delete">
    		DELETE FROM TMP_BOARD WHERE bno = #{bno}
    </delete>

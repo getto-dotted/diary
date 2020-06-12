@@ -380,6 +380,10 @@
 										<label for="content">내용</label>
 									</td>
 									<td>
+									<c:forEach items="${list2}" var = "list2">
+												<c:set var="content1" value="${list2.content }"/>
+												<input type="hidden" id="bno" name="bno" value="${list2.bno }"/>
+												</c:forEach> 
 										<div id="styledatepicker">
 											<input id="datepicker" width="120"/>
 										</div>
@@ -387,10 +391,10 @@
 								</tr>
 								<tr>
 									<td>									
-										<textarea id="inputs1" class="form-control"  cols = "70" rows = "10" name="content1" maxlength="310">글쓰기1</textarea>
+										<textarea id="inputs1" class="form-control"  cols = "70" rows = "10" name="content1" maxlength="310">${fn:split(content1,'`\\')[0] }</textarea>
 									</td>
 									<td>										
-										<textarea id="inputs2" class="form-control" cols = "70" rows = "10" name="content2" maxlength="310" >글쓰기2</textarea>
+										<textarea id="inputs2" class="form-control" cols = "70" rows = "10" name="content2" maxlength="310" >${fn:split(content1,'`\\')[1] }</textarea>
 									</td>
 								</tr>
 								<tr>

@@ -38,16 +38,62 @@ public class BoardController {
 
 	// 게시판 글 화면 진입
 	@RequestMapping(value = "/")
-	public ModelAndView writeView(TmpBoardVO tmpboardVO) throws Exception {
+	public ModelAndView writeView(TmpBoardVO tmpboardVO, HttpSession se) throws Exception {
 		ModelAndView mv = new ModelAndView();
-				
-		List<TmpBoardVO> list = service3.list(tmpboardVO);
-
-		mv.addObject("list", list);
-		mv.setViewName("main");
+		BoardVO vo = new BoardVO();
+		
+		if(se.getAttribute("userid")==null) {//로그인x인 경우 임시저장 게시글 목록과 메인화면을 보여준다
+			
+			List<TmpBoardVO> list = service3.list(tmpboardVO);							
+			mv.addObject("list", list);					
+			mv.setViewName("main");
+		}
+		else {//로그인o인 경우 해당 이이디로 작성한 글 목록과 가장 최근에 임시 저장된 글을 불러온다.
+			
+			vo.setWriter((String) se.getAttribute("userid"));
+			List<BoardVO> list = service.list(vo);
+			mv.addObject("list", list);		
+			
+			List<TmpBoardVO> list2 = service3.main(tmpboardVO);
+			mv.addObject("list2", list2);
+			mv.setViewName("writeView");			
+		}
 
 		return mv;
 	}
+	
+	@RequestMapping(value = "/tdv")
+	public ModelAndView tmpdetelview(TmpBoardVO tmpboardVO, HttpSession se, HttpServletRequest req) throws Exception {
+		ModelAndView mv = new ModelAndView();
+		BoardVO vo = new BoardVO();
+		
+		if(se.getAttribute("userid")==null) {//로그인x인 경우 임시저장 게시글 목록과 메인화면을 보여준다
+			
+			String bno = req.getParameter("bno");
+						
+			List<TmpBoardVO> list = service3.list(tmpboardVO);	
+			List<TmpBoardVO> list2 = service3.detaillist(bno);	
+						
+			mv.addObject("list", list);					
+			mv.addObject("list2", list2);					
+			
+			mv.setViewName("main");
+		}
+		else {//로그인o인 경우 해당 이이디로 작성한 글 목록과 가장 최근에 임시 저장된 글을 불러온다.
+			
+			vo.setWriter((String) se.getAttribute("userid"));
+			List<BoardVO> list = service.list(vo);
+			mv.addObject("list", list);		
+			
+			List<TmpBoardVO> list2 = service3.main(tmpboardVO);
+			mv.addObject("list2", list2);
+			mv.setViewName("writeView");			
+		}
+		
+		return mv;
+	}
+	
+	
 
 	// 게시판 글 작성
 	@RequestMapping(value = "write")
@@ -119,6 +165,9 @@ public class BoardController {
 		tmpboardVO.setFilepath(filepathtrue);
 		
 		service3.write(tmpboardVO);
+		
+		String bno = request.getParameter("bno");//임시작성된 글을 저장할 경우 새롭게 저장후 기존글을 삭제한다.		
+		service3.delete(bno);		
 		
 		mv.setViewName("redirect:/");
 		
@@ -227,6 +276,30 @@ public class BoardController {
 		
 		if(dbBno == bno2) {			
 			service.delete(bno);			
+			return mv;
+		}		
+		
+		return mv;
+	}
+	
+	//임시게시글 삭제하기
+	@RequestMapping(value="deleteTmp")
+	public ModelAndView deleteTmp(ModelAndView mv, TmpBoardVO vo, HttpServletRequest req, HttpSession se) throws Exception {
+		
+		mv.setViewName("redirect:/");
+		
+		String bno = req.getParameter("bno");
+		List<TmpBoardVO> list = service3.detaillist(bno);
+		
+		int dbBno = 0;
+		for(TmpBoardVO dto:list) {
+			dbBno = dto.getBno();
+		}
+		
+		int bno2 = Integer.parseInt(bno);
+		
+		if(dbBno == bno2) {			
+			service3.delete(bno);			
 			return mv;
 		}		
 		
