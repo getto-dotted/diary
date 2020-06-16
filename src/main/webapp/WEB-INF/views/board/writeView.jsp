@@ -334,6 +334,9 @@
 							<a href="#layer2" id="loginbtn" class="btn btn-primary" >로그인</a>
 						</c:when>
 						<c:otherwise>
+							<img src="${pageContext.request.contextPath}/resources/image/${sessionScope.profilepic}" 
+							style="height: 100px" />
+							<span>${sessionScope.username }님 반갑습니다.</span><br />
 							<a href="memberinfo" id="loginbtn" class="btn btn-secondary" >회원정보 수정</a>					
 							<a href="logout" id="loginbtn" class="btn btn-warning" >로그 아웃</a>					
 						</c:otherwise>

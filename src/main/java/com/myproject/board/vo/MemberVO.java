@@ -15,11 +15,12 @@ public class MemberVO{
 	private String address;
 	private String secession;
 	private Date regdate;
+	private String profilepic;
 	
 	public MemberVO() {	}
-	
+
 	public MemberVO(int member_no, String member_id, String password, String name, int gender, String birth,
-			String mail, String phone, String address, String secession, Date regdate) {
+			String mail, String phone, String address, String secession, Date regdate, String profilepic) {
 		super();
 		this.member_no = member_no;
 		this.member_id = member_id;
@@ -32,9 +33,8 @@ public class MemberVO{
 		this.address = address;
 		this.secession = secession;
 		this.regdate = regdate;
+		this.profilepic = profilepic;
 	}
-
-
 
 	public int getMember_no() {
 		return member_no;
@@ -122,13 +122,21 @@ public class MemberVO{
 
 	public void setRegdate(Date regdate) {
 		this.regdate = regdate;
+	}	
+	
+	public String getProfilepic() {
+		return profilepic;
+	}
+
+	public void setProfilepic(String profilepic) {
+		this.profilepic = profilepic;
 	}
 
 	@Override
 	public String toString() {
 		return "MemberVO [member_no=" + member_no + ", member_id=" + member_id + ", password=" + password + ", name="
 				+ name + ", gender=" + gender + ", birth=" + birth + ", mail=" + mail + ", phone=" + phone
-				+ ", address=" + address + ", secession=" + secession + ", regdate=" + regdate + "]";
+				+ ", address=" + address + ", secession=" + secession + ", regdate=" + regdate + ", profilepic="+ profilepic +"]";
 	}
 	
 	

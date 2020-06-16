@@ -14,7 +14,8 @@
 							mail,
 							phone,
 							address,
-							secession
+							secession,
+							profilepic
 						  )
 				   VALUES ( SIGNUP_SEQ.nextval,
 				   			#{member_id},
@@ -25,7 +26,8 @@
 				   			#{mail},
 				   			#{phone},
 				   			#{address},
-				   			'1'
+				   			'1',
+				   			#{profilepic}
 				   		  )
 	</insert>
 	<!-- 회원정보수정 -->

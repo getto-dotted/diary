@@ -146,7 +146,7 @@
 				<h1> 회원가입 </h1>
 			</header>
 		</div>
-		<form role="form" onsubmit="frmchk(this)">
+		<form role="form" onsubmit="frmchk(this)" method="post" enctype="multipart/form-data"><!-- enctype을 지정해야 파일 업로드 가능 enctype="multipart/form-data"-->
 			<div id="member_form1">
 				<div class="form-group">
 					<label id="appendlabelid" for="ID">아이디</label>
@@ -193,6 +193,10 @@ oninput = "setCustomValidity('')">
 				<div class="form-group">
 					<label for="ADDRESS">주소</label>
 					<input type="text" class="form-control" name="member_address" >
+				</div>
+				<div class="form-group">
+					<label for="Pic">프로필 사진</label>
+					<input type="file" class="form-control" name="profilePic" >
 				</div>
 				<button class="btn btn-primary" id="regbtn" type="submit">가입하기</button>
 			</div>

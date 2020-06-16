@@ -1,6 +1,11 @@
 package com.myproject.board.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +13,9 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.myproject.board.service.BoardService;
@@ -23,8 +31,10 @@ public class MemberController {
 	BoardService service2;
 
 	// 회원가입
-	@RequestMapping(value = "save")
+	@RequestMapping(value = "save", method=RequestMethod.POST)
 	public ModelAndView writeView(MemberVO memberVO, HttpServletRequest request) throws Exception {
+		
+		
 		ModelAndView mv = new ModelAndView();
 
 		MemberVO vo = new MemberVO();
@@ -32,7 +42,7 @@ public class MemberController {
 		vo.setMember_id(request.getParameter("member_id"));
 		vo.setPassword(request.getParameter("member_password"));
 		vo.setName(request.getParameter("member_name"));
-		vo.setGender(Integer.parseInt(request.getParameter("member_gender")));
+		
 
 		String birth = request.getParameter("member_birth1") + "-" + request.getParameter("member_birth2") + "-"
 				+ request.getParameter("member_birth3");
@@ -40,7 +50,64 @@ public class MemberController {
 
 		vo.setMail(request.getParameter("member_email"));
 		vo.setPhone(request.getParameter("member_phone"));
-		vo.setAddress(request.getParameter("member_address"));
+		vo.setAddress(request.getParameter("member_address"));		
+		
+		try {
+			String imagePath = request.getSession().getServletContext().getRealPath("resources/image/");
+			MultipartHttpServletRequest mhsr = (MultipartHttpServletRequest) request;
+			//업로드폼의 file속성 필드의 이름을 모두 읽어온다.
+			Iterator<String> itr = mhsr.getFileNames();			
+			//업로드된 파일명 처리를 위한 변수와 컬렉션 생성
+			MultipartFile mfile = null;
+			String fileName ="";
+			List resultList = new ArrayList();
+			
+			//업로드폼의 file속성 필드갯수만큼 반복함(2회)
+			while(itr.hasNext()) {
+				fileName = (String)itr.next();
+				
+				//서버로 업로드된 임시파일명 가져오기
+				mfile = mhsr.getFile(fileName);
+				System.out.println("mfile="+mfile);
+				
+				//한글깨짐방지 처리후 업로드된 파일명을 가져옴
+				String ofile = new String(mfile.getOriginalFilename().getBytes(),"UTF-8");
+				if("".equals(ofile)) {
+					/*
+					만약 업로드된 파일명이 공백문자라면 업로드가 되지 않은 것으로 간주하고
+					반복의 처음으로 이동한다.
+					 */
+					continue;
+				}
+				//파일의 확장자 가져오기
+				String ext = ofile.substring(ofile.lastIndexOf('.'));
+				//UUID를 통해 생성된 문자열과 확장자 결합
+				String nfile = UUID.randomUUID().toString() +ext;
+				/*
+				File.separator : 윈도우와 리눅스는 서로 디렉토리를 구분하는
+				기호가 다르므로, 해당 OS에 맞는 기호를 자동으로 붙여준다.
+				윈도우는 \(역슬러시), 리눅스는 /(슬러시)를 사용하게 된다.
+				 */
+				File serverFullName = new File(imagePath+File.separator+nfile);
+				//조립된 경로에 해당 파일 저장
+				mfile.transferTo(serverFullName);
+				//새로 저장된 파일명을 vo객체에 세팅
+				vo.setProfilepic(nfile);				
+				
+				System.out.println("nfile="+nfile);
+				System.out.println("imagePath="+imagePath);
+				
+				vo.setGender(Integer.parseInt(request.getParameter("member_gender")));
+			}	
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("파일업로드 관련 오류");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("알 수 없는 오류");
+		}
 
 		service.save(vo);
 
@@ -74,14 +141,17 @@ public class MemberController {
 			
 			String username = "";
 			String userid = "";
+			String profilepic = "";
 			
 			for(MemberVO name:list) {
 				username = name.getName();
 				userid = name.getMember_id();
+				profilepic = name.getProfilepic();
 			}
 			//세션영역에 유저이름 입력/ 아이디도 필요하게 될것 같은데../그러하다
 			session.setAttribute("username", username);
 			session.setAttribute("userid", userid);
+			session.setAttribute("profilepic", profilepic);
 
 			mv.addObject(list); 
 			mv.setViewName("writeView");
