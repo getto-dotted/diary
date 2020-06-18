@@ -68,7 +68,6 @@ public class MemberController {
 				
 				//서버로 업로드된 임시파일명 가져오기
 				mfile = mhsr.getFile(fileName);
-				System.out.println("mfile="+mfile);
 				
 				//한글깨짐방지 처리후 업로드된 파일명을 가져옴
 				String ofile = new String(mfile.getOriginalFilename().getBytes(),"UTF-8");
@@ -77,6 +76,8 @@ public class MemberController {
 					만약 업로드된 파일명이 공백문자라면 업로드가 되지 않은 것으로 간주하고
 					반복의 처음으로 이동한다.
 					 */
+					vo.setGender(Integer.parseInt(request.getParameter("member_gender")));
+					vo.setProfilepic("defaultpic.png");
 					continue;
 				}
 				//파일의 확장자 가져오기
@@ -94,8 +95,9 @@ public class MemberController {
 				//새로 저장된 파일명을 vo객체에 세팅
 				vo.setProfilepic(nfile);				
 				
-				System.out.println("nfile="+nfile);
-				System.out.println("imagePath="+imagePath);
+				if("".equals(nfile)) {
+					vo.setProfilepic("defaultpic.png");
+				}
 				
 				vo.setGender(Integer.parseInt(request.getParameter("member_gender")));
 			}	

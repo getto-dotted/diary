@@ -347,6 +347,9 @@
 					</c:when>
 					
 					<c:otherwise>
+						<img src="${pageContext.request.contextPath}/resources/image/${sessionScope.profilepic}" 
+							style="height: 100px" />
+							<span>${sessionScope.username }님 반갑습니다.</span><br />
 						<a href="${pageContext.request.contextPath}" id="loginbtn" class="btn btn-primary" >새 글작성</a>					
 						<br />
 						<a href="memberinfo" id="loginbtn" class="btn btn-secondary" >회원정보 수정</a>					
