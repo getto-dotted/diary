@@ -304,6 +304,34 @@
 			} */ 
 		});
    	}
+   	function changeSize(){
+   		var text1 =  document.getElementById("inputs1");
+   		var text2 =  document.getElementById("inputs2");
+   		var fontS = document.getElementById("font-size");   		
+   		
+   		text1.style.fontSize =  fontS.value+"px";
+   		text2.style.fontSize =  fontS.value+"px"; 		
+
+   	}
+   	function changeColor(){   		
+   		var text1 =  document.getElementById("inputs1");
+   		var text2 =  document.getElementById("inputs2");
+   		var fontC = document.getElementById("font-color");   		
+   		
+   		text1.style.color =  fontC.value;
+   		text2.style.color =  fontC.value; 		
+
+   	}
+   	function changeFont(){   		
+   		var text1 =  document.getElementById("inputs1");
+   		var text2 =  document.getElementById("inputs2");
+   		var font1 = document.getElementById("font1");   		
+   		
+   		text1.style.fontFamily =  font1.value;
+   		text2.style.fontFamily =  font1.value;
+
+   	}
+   	
 </script>
 	<body>
 		<div class="leftroot" id= "leftroot">
@@ -411,8 +439,23 @@
 									</td>
 								</tr>
 								<tr>
-									<td>																		
-									</td>
+									<td>
+										<select id="font-size" onchange="changeSize()" >
+											<option value="15">15</option>
+											<option value="25">25</option>
+											<option value="35">35</option>
+										</select>																		
+										<select id="font-color" onchange="changeColor()" >
+											<option value="red">빨강</option>
+											<option value="blue">파랑</option>
+											<option value="yellow">노랑</option>
+										</select>																		
+										<select id="font1" onchange="changeFont()" >
+											<option value="Serif">돋움체</option>
+											<option value="Arial">바탕체</option>
+											<option value="Courier">고딕체</option>
+										</select>																		
+									</td>									
 									<td align="right">																														
 										<button class="btn btn-warning" type="button" onclick="sumcontent(${bno })">임시저장</button>		
 										<button class="btn btn-danger" type="button" onclick="deleteBoard(${bno })">삭제</button>		
