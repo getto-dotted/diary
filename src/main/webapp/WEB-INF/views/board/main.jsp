@@ -124,12 +124,12 @@
 	}
 </style>
 <script>       
-    $( document ).ready(function() {
+    /* $( document ).ready(function() {
     	$('#content2').prop("disabled", true);
-    });
+    }); */
    	//텍스트 넘기기
-   	$(function() {
-	    $(".inputs").keyup (function () {
+   	$(function() {//로그인 버튼과 날짜선택 버튼 활성화 함수
+	    /* $(".inputs").keyup (function () {
 	    	
 	        var charLimit = $(this).attr("maxlength");
 	        if (this.value.length >= charLimit) {
@@ -140,7 +140,7 @@
 	            alert("ddd");
 	            return false;
 	        }
-	    });
+	    }); */
 	    
 	    $('#loginbtn').click(function(){
 	        var $href = $(this).attr('href');
@@ -152,16 +152,15 @@
 	    
 	});
     
-  	//캡쳐 url 담기
-    function imgSrcMake(){
+  	/* ---------------------------------------------게시글 작성 관련 함수 --------------------------------------*/
+    function imgSrcMake(){//화면캡쳐 url 담기
     	html2canvas($("#alertalert").get(0)).then(function(canvas) {
     	imgSource = $("#imgSrc").val(canvas.toDataURL("image/png"));
     	});
     	return imgSource;
-    }    
-    
-  	//데이터 등록
-   	function sumcontent(bno){
+    }        
+  	
+   	function sumcontent(bno){//게시글작성 함수
    		
 		var imgSourceChk = imgSrcMake();
 
@@ -199,8 +198,8 @@
 		}
    	}
   	
-  	//임시저장글을 불러와야한다..
-   	function detailwriteView(bno){
+  	
+   	function detailwriteView(bno){//임시저장된 글을 자세히 보기
    		//ajax 데이터 통신
 		$.ajax({ 
 			type: 'POST',
@@ -210,18 +209,36 @@
 			},
 			success : function(data) { 
 				console.log(data);
-			} 
-			/* error: function(jqXHR, textStatus, errorThrown) {
-				console.log(jqXHR.responseText);
-			} */ 
+			} 			
 		});
    	}
-  	
-   	function layer_popup(el){
-   		var $el = $(el);
-        
-        var isDim = $el.prev().hasClass('dimBg');   //dimmed 레이어를 감지하기 위한 boolean 변수
-		
+   	
+   	function deleteBoard(bno){//임시 저장글 삭제 함수
+   		if(bno==null){//새임시저장에서는 동작x
+   			return false;
+   		}
+   		var delchk = confirm('삭제하시겠습니까?');
+   		if(delchk == true){
+   			$.ajax({ 
+   				type: 'POST',
+   				url : 'deleteTmp',
+   				data: {
+   					   "bno"    	 : bno
+   				},
+   				success : function(data) { 
+   					console.log(data);
+   					alert("삭제되었습니다.");
+   					location.reload();   					
+   				}
+   			});
+   		}
+   	}  	   	
+   	
+  	/* ---------------------------------------------로그인 관련 함수 --------------------------------------*/
+
+   	function layer_popup(el){//로그인 창 팝업
+   		var $el = $(el);        
+        var isDim = $el.prev().hasClass('dimBg');//dimmed 레이어를 감지하기 위한 boolean 변수		
         isDim ? $('.dim-layer').fadeIn() : $el.fadeIn();
 
         var $elWidth = ~~($el.outerWidth()),
@@ -248,31 +265,9 @@
             $('.dim-layer').fadeOut();
             return false;
         });
-    }
-
-   	function deleteBoard(bno){
-   		if(bno==null){//새임시저장에서는 동작x
-   			return false;
-   		}
-   		var delchk = confirm('삭제하시겠습니까?');
-   		if(delchk == true){
-   			$.ajax({ 
-   				type: 'POST',
-   				url : 'deleteTmp',
-   				data: {
-   					   "bno"    	 : bno
-   				},
-   				success : function(data) { 
-   					console.log(data);
-   					alert("삭제되었습니다.");
-   					location.reload();
-   					/* ajax를 썼는데 새로고침을 해야할까...? */
-   				}
-   			});
-   		}
-   	}
+    }   	
    	
-   	function login(){
+   	function login(){//로그인 함수, ajax를 사용하기 때문에 required 적용이 어렵다.
    		var idchk = $("#inputEmail3").val();
    		var passchk = $("#inputPassword3").val();
 
@@ -296,15 +291,14 @@
 				console.log(data);
 				$('.dim-layer').fadeOut();	
 				sumcontent;
-				location.reload();
-				/* ajax를 썼는데 새로고침을 해야할까...? */
-			} 
-			/* error: function(jqXHR, textStatus, errorThrown) {
-				console.log(jqXHR.responseText);
-			} */ 
+				location.reload();				
+			} 			
 		});
    	}
-   	function changeSize(){
+   	
+  	/* ---------------------------------------------본문 꾸미기 관련 함수 --------------------------------------*/
+
+   	function changeSize(){//본문 폰트 크기 조정 함수
    		var text1 =  document.getElementById("inputs1");
    		var text2 =  document.getElementById("inputs2");
    		var fontS = document.getElementById("font-size");   		
@@ -313,7 +307,7 @@
    		text2.style.fontSize =  fontS.value+"px"; 		
 
    	}
-   	function changeColor(){   		
+   	function changeColor(){//본문 폰트 색깔 조정 함수		
    		var text1 =  document.getElementById("inputs1");
    		var text2 =  document.getElementById("inputs2");
    		var fontC = document.getElementById("font-color");   		
@@ -322,7 +316,7 @@
    		text2.style.color =  fontC.value; 		
 
    	}
-   	function changeFont(){   		
+   	function changeFont(){//본문 폰트 글꼴 조정 함수   		
    		var text1 =  document.getElementById("inputs1");
    		var text2 =  document.getElementById("inputs2");
    		var font1 = document.getElementById("font1");   		
@@ -429,8 +423,7 @@
 										</div>									
 									</td>
 								</tr>								
-								<tr>
-								
+								<tr>								
 									<td>									
 										<textarea id="inputs1" class="form-control"  cols = "70" rows = "10" name="content1" maxlength="310" required>${fn:split(content1,'`\\')[0] }</textarea>
 									</td>
@@ -462,8 +455,7 @@
 									</td>								
 								</tr>			
 							</tbody>			
-						</table>
-					
+						</table>					
 					</form>
 				</section>
 				<hr />

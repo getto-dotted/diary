@@ -35,53 +35,7 @@
 	}
 </style>
 <script type="text/javascript">
-	//핸드폰 번호는 최대 11자리 maxlength 만큼만 입력 가능
-	function maxLengthCheck(object){
-	    if (object.value.length > object.maxLength){
-	        object.value = object.value.slice(0, object.maxLength);
-	    }
-	};
-	function frmchk(f){
-
-		if(!f.member_id.value){
-			alert("아이디를 입력하세요");
-			f.member_id.focus();
-			return false;
-		} 
-		if(!f.password1.value){
-			alert("비밀번호를 입력하세요");
-			f.password1.focus();
-			return false;
-		} 
-		if(!f.member_name.value){
-			alert("이름을 입력하세요");
-			f.member_name.focus();
-			return false;
-		} 
-		if(f.member_gender.value=="0"){
-			alert("성별을 입력하세요");
-			f.member_gender.focus();
-			return false;
-		} 
-		if(!f.member_phone.value){
-			alert("전화번호를 입력하세요");
-			f.member_phone.focus();
-			return false;
-		} 
-		var chk = document.getElementById('appendlabelpassword').innerHTML;
-		var chkword ='<br><span style="color: blue;">비밀번호 확인 완료</span>';
-		
-		if(chk!=chkword){
-			alert("비밀번호를 확인하세요");
-			f.password1.focus();
-			return false;
-		}
-		f.action="save";
-		f.method="post";	
-	};
-	
-	
-	$(document).ready(function(){
+	$(document).ready(function(){//회원가입 화면 로딩시 아이디와 비밀번호 체크를 위한 함수 호출
 		
 		$("#member_id").bind("keyup",function(){
 			chck = /[`/?<>,.;:~!@\#$%^&*\()\-=+_"']/gi;
@@ -138,6 +92,24 @@
 			}			
 		});
 	});
+	//핸드폰 번호는 최대 11자리 maxlength 만큼만 입력 가능, type="nuber"에서는 maxlength 속성이 적용되지 않는다고 한다.
+	function maxLengthCheck(object){
+	    if (object.value.length > 11){
+	        object.value = object.value.slice(0, 11);
+	    }
+	};
+	function frmchk(f){//자바스크립트를 이용한 유효성 체크 항목을 required 속성을 사용해 상당부분 없앴다.
+		var chk = document.getElementById('appendlabelpassword').innerHTML;//비밀번호 입력후 출력 문구를 가져온다.
+		var chkword ='<br><span style="color: blue;">비밀번호 확인 완료</span>';//정상 비밀번호일 경우의 출력문구. 태그까지 가져온다.
+		
+		if(chk!=chkword){
+			alert("비밀번호를 확인하세요");
+			f.password1.focus();
+			return false;
+		}		
+		f.action="save";
+		f.method="post";
+	};
 </script>	
 <body>
 	<div class="alert alert-primary" role="alert">
@@ -146,29 +118,33 @@
 				<h1> 회원가입 </h1>
 			</header>
 		</div>
-		<form role="form" onsubmit="frmchk(this)" method="post" enctype="multipart/form-data"><!-- enctype을 지정해야 파일 업로드 가능 enctype="multipart/form-data"-->
+		<form role="form" onsubmit="frmchk(this)" method="post" enctype="multipart/form-data">
+		<!-- enctype을 지정해야 파일 업로드 가능 enctype="multipart/form-data"-->
 			<div id="member_form1">
 				<div class="form-group">
-					<label id="appendlabelid" for="ID">아이디</label>
-					<input type="text" id="member_id" class="form-control" name="member_id" >
+					<label id="appendlabelid" for="ID">아이디<br /><span style="color:blue;">아이디에는 특수문자를 사용할 수 없습니다.</span></label>
+					<input type="text" id="member_id" class="form-control" name="member_id" 
+					required oninvalid="this.setCustomValidity('아이디를 입력해 주세요')" oninput = "setCustomValidity('')">
 				</div>
 				<div class="form-group">
-					<label for="PASSWORD">비밀번호</label>
+					<label for="PASSWORD">비밀번호 <br /><span style="color:blue;">10~15자리의 영문,숫자 조합이어야 합니다.</span></label>					
 					<input type="password" id="password" class="form-control" name="member_password"  >
 				</div>
 				<div class="form-group">
 					<label id="appendlabelpassword" for="PASSWORD">비밀번호 재확인</label>
 					<label id="appendlabelpassword2" for="PASSWORD"></label>
-					<input type="password" id="password1"class="form-control" name="member_password1" >
+					<input type="password" id="password1"class="form-control" name="member_password1" 
+					required oninvalid="this.setCustomValidity('비밀번호를 입력해 주세요')" oninput = "setCustomValidity('')">
 				</div>
 				<div class="form-group">
 					<label for="NAME">이름</label>
-					<input type="text" class="form-control" name="member_name" >
+					<input type="text" class="form-control" name="member_name" 
+					required oninvalid="this.setCustomValidity('이름을 입력해 주세요')" oninput = "setCustomValidity('')">
 				</div>
 				<div class="form-group">
 					<label for="GENDER">성별</label>
-					<select class="form-control" name="member_gender" onchange="check()" >
-						<option value="0">성별</option>
+					<select class="form-control" name="member_gender" required="required"><!-- 출력 메시지 조정이 어렵다  -->
+						<option value="">성별</option>
 						<option value="1">남자</option>
 						<option value="2">여자</option>
 					</select>
@@ -183,12 +159,12 @@
 				</div>
 				<div class="form-group">
 					<label for="IputEmail">이메일 주소</label>
-					<input type="email" class="form-control" name="member_email" placeholder="이메일을 입력하세요" required oninvalid="this.setCustomValidity('이메일을 입력해 주세요')" 
-oninput = "setCustomValidity('')">
+					<input type="email" class="form-control" name="member_email" placeholder="이메일을 입력하세요" >
 				</div>
 				<div class="form-group">
 					<label for="PHONE">핸드폰</label>
-					<input type="number" class="form-control" name="member_phone" maxlength="11" oninput="maxLengthCheck(this)" placeholder="'-' 없이 입력해주세요.">
+					<input type="number" class="form-control" name="member_phone" oninput="maxLengthCheck(this)" placeholder="'-' 없이 입력해주세요."
+					required="required" oninvalid="this.setCustomValidity('핸드폰 번호를 입력해주세요.')" onkeyup="setCustomValidity('')"/><!-- type="number"는 onkeyup을 사용한다. -->
 				</div>
 				<div class="form-group">
 					<label for="ADDRESS">주소</label>

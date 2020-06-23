@@ -47,78 +47,6 @@
         float: right;
         box-sizing: border-box;
     }
-    
-    .pop-layer .pop-container {
-	  padding: 20px 25px;
-	}
-	
-	.pop-layer p.ctxt {
-	  color: #666;
-	  line-height: 25px;
-	}
-	
-	.pop-layer .btn-r {
-	  width: 100%;
-	  margin: 10px 0 20px;
-	  padding-top: 10px;
-	  border-top: 1px solid #DDD;
-	  text-align: right;
-	}
-	
-	.pop-layer {
-	  display: none;
-	  position: absolute;
-	  top: 50%;
-	  left: 50%;
-	  width: 410px;
-	  height: auto;
-	  background-color: #fff;
-	  border: 5px solid #3571B5;
-	  z-index: 10;
-	}
-	
-	.dim-layer {
-	  display: none;
-	  position: fixed;
-	  _position: absolute;
-	  top: 0;
-	  left: 0;
-	  width: 100%;
-	  height: 100%;
-	  z-index: 100;
-	}
-	
-	.dim-layer .dimBg {
-	  position: absolute;
-	  top: 0;
-	  left: 0;
-	  width: 100%;
-	  height: 100%;
-	  background: #000;
-	  opacity: .5;
-	  filter: alpha(opacity=50);
-	}
-	
-	.dim-layer .pop-layer {
-	  display: block;
-	}
-	
-	a.btn-layerClose {
-	  display: inline-block;
-	  height: 25px;
-	  padding: 0 14px 0;
-	  border: 1px solid #304a8a;
-	  background-color: #3f5a9d;
-	  font-size: 13px;
-	  color: #fff;
-	  line-height: 25px;
-	}
-	
-	a.btn-layerClose:hover {
-	  border: 1px solid #091940;
-	  background-color: #1f326a;
-	  color: #fff;
-	}
 	#styledatepicker {
 		float: right;
 	}
@@ -129,40 +57,23 @@
     	$('#content2').prop("disabled", true);
     });  */   	
    	//텍스트 넘기기
-   	$(function() {
-	    $(".inputs").keyup (function () {
-	    	
-	        var charLimit = $(this).attr("maxlength");
-	        if (this.value.length >= charLimit) {
-	        	  $( document ).ready(function() {//좌측 레이어로 로딩시 해당하는 옵션?
-	        	    	$('#content2').prop("disabled", false);
-	        	  }); 
-	            $("#content2").focus();
-	            alert("ddd");
-	            return false;
-	        }
-	    });
-	    
-	    $('#loginbtn').click(function(){
-	        var $href = $(this).attr('href');
-	        layer_popup($href);
-	    });
+   	
+   	$(function() {//로그인 버튼과 날짜선택 버튼 활성화 함수, jquery 준비 함수   
 	    $('#datepicker').datepicker({
 	    	format: "yyyy-mm-dd"
-	    });
-	    
+	    });	    
 	});
     
-  	//캡쳐 url 담기
-    function imgSrcMake(){
+  	/* ---------------------------------------------게시글 작성 관련 함수 --------------------------------------*/
+
+    function imgSrcMake(){//화면캡쳐 url 담기
     	html2canvas($("#alertalert").get(0)).then(function(canvas) {
     	imgSource = $("#imgSrc").val(canvas.toDataURL("image/png"));
     	});
     	return imgSource;
     }    
     
-  	//데이터 등록
-   	function sumcontent(){
+   	function sumcontent(){//게시글작성 함수
    		
 		var imgSourceChk = imgSrcMake();
 
@@ -179,7 +90,7 @@
    				return false
    			}
 			
-   			if(contentValue == "" ||contentValue == "테스트테스트"){//텍스트에리어에 테스트가 적혀있어서 작동하지 않는다.
+   			if(contentValue == ""){//기본으로 임시저장글이 들어가 있어서 작동하지 않을듯
    				alert("내용을 적어주세요.");
    				return false;
    			}
@@ -204,10 +115,9 @@
    				}
    			});
 		}
-   	}
+   	}  	
   	
-  	//목록 선택하면 불러오기
-   	function detailwriteView(bno){
+   	function detailwriteView(bno){//목록 선택하면 상세보기 화면으로 이동
    		//ajax 데이터 통신
 		$.ajax({ 
 			type: 'POST',
@@ -218,80 +128,11 @@
 			success : function(data) { 
 				console.log(data);
 			} 
-			/* error: function(jqXHR, textStatus, errorThrown) {
-				console.log(jqXHR.responseText);
-			} */ 
 		});
    	}
-  	
-   	function layer_popup(el){
-   		var $el = $(el);
-        
-        var isDim = $el.prev().hasClass('dimBg');   //dimmed 레이어를 감지하기 위한 boolean 변수
-		
-        isDim ? $('.dim-layer').fadeIn() : $el.fadeIn();
-
-        var $elWidth = ~~($el.outerWidth()),
-            $elHeight = ~~($el.outerHeight()),
-            docWidth = $(document).width(),
-            docHeight = $(document).height();
-
-        // 화면의 중앙에 레이어를 띄운다.
-        if ($elHeight < docHeight || $elWidth < docWidth) {
-            $el.css({
-                marginTop: -$elHeight /2,
-                marginLeft: -$elWidth/2
-            })
-        } else {
-            $el.css({top: 0, left: 0});
-        }
-
-        $el.find('#btn-layerClose').click(function(){
-            isDim ? $('.dim-layer').fadeOut() : $el.fadeOut(); // 닫기 버튼을 클릭하면 레이어가 닫힌다.
-            return false;
-        });
-
-        $('.layer .dimBg').click(function(){
-            $('.dim-layer').fadeOut();
-            return false;
-        });
-    }
    	
-   	function login(){
-   		var idchk = $("#inputEmail3").val();
-   		var passchk = $("#inputPassword3").val();
-
-   		if(idchk==''){
-   			alert('ID를 입력해주세요');
-   			return false;
-   		}
-   		if(passchk==''){
-   			alert('비밀번호를 입력해주세요');
-   			return false;
-   		}
-   		
-   		$.ajax({ 
-			type: 'POST',
-			url : 'login',
-			data: {
-				   "member_id"    	 : idchk,
-				   "password"		: passchk,
-				   "text1": input1,
-				   "text2": input2
-			},
-			success : function(data) { 
-				console.log(data);
-				$('.dim-layer').fadeOut();
-				
-				//$("#leftroot").load(window.location.reload());
-				//location.reload();
-				/* ajax를 썼는데 새로고침을 해야할까...? */
-			} 
-			/* error: function(jqXHR, textStatus, errorThrown) {
-				console.log(jqXHR.responseText);
-			} */ 
-		});
-   	}
+   	/* 로그인 함수없음 */
+  	/* ---------------------------------------------본문 꾸미기 관련 함수 --------------------------------------*/
 	function changeSize(){
    		var text1 =  document.getElementById("inputs1");
    		var text2 =  document.getElementById("inputs2");
@@ -324,12 +165,7 @@
 		<div class="leftroot" id= "leftroot">
 			<div class="alert alert-warning" role="alert">
 				<section id = "container">
-					<table>
-					<c:choose>
-						<c:when test="${empty sessionScope.username }">
-							<h3>로그인필요</h3>
-						</c:when>					
-					<c:otherwise>
+					<table>					
 						<c:forEach items="${list}" var = "list">
 						<tr>
 							<td>
@@ -342,9 +178,7 @@
 								<hr />
 							</td>
 						</tr>
-						</c:forEach>			
-					</c:otherwise>
-					</c:choose>	
+						</c:forEach>
 					</table>
 				</section>
 			</div>
@@ -356,48 +190,10 @@
 					<h1> 일기장 </h1>
 				</header>
 				<div align="right">
-					<c:choose>
-						<c:when test="${empty sessionScope.username }">
-							<a href="#layer2" id="loginbtn" class="btn btn-primary" >로그인</a>
-						</c:when>
-						<c:otherwise>
-							<img src="${pageContext.request.contextPath}/resources/image/${sessionScope.profilepic}" 
-							style="height: 100px" />
-							<span>${sessionScope.username }님 반갑습니다.</span><br />
-							<a href="memberinfo" id="loginbtn" class="btn btn-secondary" >회원정보 수정</a>					
-							<a href="logout" id="loginbtn" class="btn btn-warning" >로그 아웃</a>					
-						</c:otherwise>
-					</c:choose>						
-				</div>
-				<div class="dim-layer">
-				    <div class="dimBg"></div>
-				    <div id="layer2" class="pop-layer">
-				        <div class="pop-container">
-				            <div class="pop-conts">
-				                <!--로그인 화면 //-->
-				                <form action="login" >
-									<div class="form-group">
-										<label for="ID" class="col-sm-2 control-label">ID</label>
-										<div class="col-sm-10">
-										<input type="text" class="form-control" id="inputEmail3" placeholder="아이디">
-										</div>
-									</div>
-									<div class="form-group">
-										<label for="inputPassword3" class="col-sm-2 control-label">Password</label>
-										<div class="col-sm-10">
-										<input type="password" class="form-control" id="inputPassword3" placeholder="비밀번호">
-										</div>
-									</div>
-								</form>
-				                <div class="btn-r">
-				                	<a href="#" id="btn-singup" class="btn btn-primary" onClick="location.href='signUp'">회원가입</a>
-				                	<a href="#" class="btn btn-primary" onclick="login()">로그인</a>
-				                    <a href="#" id="btn-layerClose" class="btn btn-primary">닫기</a>
-				                </div>
-				                <!--// content-->
-				            </div>
-				        </div>
-				    </div>
+					<img src="${pageContext.request.contextPath}/resources/image/${sessionScope.profilepic}" style="height: 100px" />
+					<span>${sessionScope.username }님 반갑습니다.</span><br />
+					<a href="memberinfo" id="loginbtn" class="btn btn-secondary" >회원정보 수정</a>					
+					<a href="logout" id="loginbtn" class="btn btn-warning" >로그아웃</a>					
 				</div>
 				<hr />
 				<hr />
@@ -427,7 +223,7 @@
 										<textarea id="inputs2" class="form-control" cols = "70" rows = "10" name="content2" maxlength="310" >${fn:split(content1,'`\\')[1] }</textarea>
 									</td>
 								</tr>
-								<tr>
+								<tr><!-- 게시글 꾸미기 -->
 									<td>									
 										<select id="font-size" onchange="changeSize()" >
 											<option value="15">15</option>
@@ -446,13 +242,8 @@
 										</select>
 									<input type="hidden" id="writer" name="writer" value="${sessionScope.userid }"/>
 									</td>
-									<td align="right">		
-									<c:choose>
-										<c:when test="${empty sessionScope.username }"></c:when>					
-										<c:otherwise>
-											<button class="btn btn-primary" type="button" onclick="sumcontent()">작성</button>					
-										</c:otherwise>
-									</c:choose>															
+									<td align="right">											
+										<button class="btn btn-primary" type="button" onclick="sumcontent()">작성</button>																		
 									</td>
 								</tr>			
 							</tbody>			
