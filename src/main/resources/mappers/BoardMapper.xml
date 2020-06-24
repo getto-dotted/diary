@@ -37,7 +37,7 @@
    </select>
    
    <update id="update">
-   		UPDATE MP_BOARD SET   content   = #{content},
+   		UPDATE MP_BOARD SET   content   = #{content}, filepath = #{filepath},
 						  regdate   = sysdate
 		WHERE bno = #{bno}
    </update>

@@ -180,11 +180,19 @@ public class BoardController {
 		
 		String bno1 = req.getParameter("bno");
 		String content = req.getParameter("content");
+		// 인코딩 되기 전 파일 경로
+		String filepathurl = req.getParameter("filepathurl");
+		// 인코딩 된 파일 경로 담을 변수 초기화
+		String filepathtrue = null;
+
+		String imagePath = req.getSession().getServletContext().getRealPath("resources/image/"); 
+		filepathtrue = filepath(filepathurl,imagePath);
+		
 		int bno = Integer.parseInt(bno1);
 		
 		VO.setBno(bno);
 		VO.setContent(content);
-		
+		VO.setFilepath(filepathtrue);
 		service.update(VO);
 
 		return "detailwriteView";

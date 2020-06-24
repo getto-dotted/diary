@@ -171,6 +171,9 @@
    			var addString = '`\\';
    			var contentValue = contentValue1 + contentValue2;
    			var contentTotal = contentValue1 + addString+ contentValue2;
+   			var fontsize = $('select[name=fontsize]').val();
+   			var fontcolor = $('select[name=fontcolor]').val();
+   			var font = $('select[name=font]').val();   		
    			
    			/* if(contentValue == "" ){//require로 바꿔보자
    				alert("내용을 적어주세요.");
@@ -185,7 +188,11 @@
    					   "title"    	 : $("#datepicker").val(),
    					   "content" 	 : contentTotal,
    					   "filepathurl" : $("#imgSrc").val(),	
-   					   "bno":bno
+   					   "bno":bno,
+   					   "fontsize":fontsize,
+   					   "fontcolor":fontcolor,
+   					   "font":font
+   					   
    				},
    				success : function(data) { 
    					alert('임시 저장되었습니다.');
@@ -433,17 +440,17 @@
 								</tr>
 								<tr>
 									<td>
-										<select id="font-size" onchange="changeSize()" >
+										<select id="font-size" onchange="changeSize()" name="fontsize">
 											<option value="15">15</option>
 											<option value="25">25</option>
 											<option value="35">35</option>
 										</select>																		
-										<select id="font-color" onchange="changeColor()" >
+										<select id="font-color" onchange="changeColor()" name="fontcolor">
 											<option value="red">빨강</option>
 											<option value="blue">파랑</option>
 											<option value="yellow">노랑</option>
 										</select>																		
-										<select id="font1" onchange="changeFont()" >
+										<select id="font1" onchange="changeFont()" name="font">
 											<option value="Serif">돋움체</option>
 											<option value="Arial">바탕체</option>
 											<option value="Courier">고딕체</option>

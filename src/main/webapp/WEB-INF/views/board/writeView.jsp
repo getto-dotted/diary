@@ -84,6 +84,9 @@
    			var addString = '`\\';
    			var contentValue = contentValue1 + contentValue2;
    			var contentTotal = contentValue1 + addString+ contentValue2;
+   			var fontsize = $('select[name=fontsize]').val();
+   			var fontcolor = $('select[name=fontcolor]').val();
+   			var font = $('select[name=font]').val();   
    			
    			if($("#datepicker").val() == ""){
    				alert("날짜를 입력하세요.");
@@ -103,7 +106,10 @@
    					   "title"    	 : $("#datepicker").val(),
    					   "content" 	 : contentTotal,
    					   "writer"  	 : $("#writer").val(),
-   					   "filepathurl" : $("#imgSrc").val()				   
+   					   "filepathurl" : $("#imgSrc").val(),
+   					   "fontsize":fontsize,
+					   "fontcolor":fontcolor,
+					   "font":font
    				},
    				success : function(data) { 
    					alert('작성되었습니다.');
@@ -169,7 +175,6 @@
 						<c:forEach items="${list}" var = "list">
 						<tr>
 							<td>
-								<input id="bno" type="hidden" value="${list.bno}"/>
 								<a href="detailwriteView?bno=${list.bno}">
 								<img onclick="detailwriteView(${list.bno});" style="cursor:hand" 
 								src="${pageContext.request.contextPath}/resources/image/${list.filepath}" 
@@ -190,7 +195,7 @@
 					<h1> 일기장 </h1>
 				</header>
 				<div align="right">
-					<img src="${pageContext.request.contextPath}/resources/image/${sessionScope.profilepic}" style="height: 100px" />
+					<img src="${pageContext.request.contextPath}/resources/image/${sessionScope.profilepic}" style="height: 90px" />
 					<span>${sessionScope.username }님 반갑습니다.</span><br />
 					<a href="memberinfo" id="loginbtn" class="btn btn-secondary" >회원정보 수정</a>					
 					<a href="logout" id="loginbtn" class="btn btn-warning" >로그아웃</a>					
@@ -225,17 +230,17 @@
 								</tr>
 								<tr><!-- 게시글 꾸미기 -->
 									<td>									
-										<select id="font-size" onchange="changeSize()" >
+										<select id="font-size" onchange="changeSize()" name="fontsize">
 											<option value="15">15</option>
 											<option value="25">25</option>
 											<option value="35">35</option>
 										</select>																		
-										<select id="font-color" onchange="changeColor()" >
+										<select id="font-color" onchange="changeColor()" name="fontcolor">
 											<option value="red">빨강</option>
 											<option value="blue">파랑</option>
 											<option value="yellow">노랑</option>
 										</select>																		
-										<select id="font1" onchange="changeFont()" >
+										<select id="font1" onchange="changeFont()" name="font">
 											<option value="Serif">돋움체</option>
 											<option value="Arial">바탕체</option>
 											<option value="Courier">고딕체</option>

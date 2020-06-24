@@ -10,11 +10,14 @@ public class TmpBoardVO{
 	private String filepath;
 	private Date write_date;
 	private Date regdate;
+	private String font;
+	private String fontsize;
+	private String fontcolor;
 	
 	public TmpBoardVO() {	}
 	
-	public TmpBoardVO(int bno, String title, String content,String filepath, Date write_date,
-			Date regdate) {
+	public TmpBoardVO(int bno, String title, String content, String filepath, Date write_date, Date regdate,
+			String font, String fontsize, String fontcolor) {
 		super();
 		this.bno = bno;
 		this.title = title;
@@ -22,6 +25,9 @@ public class TmpBoardVO{
 		this.filepath = filepath;
 		this.write_date = write_date;
 		this.regdate = regdate;
+		this.font = font;
+		this.fontsize = fontsize;
+		this.fontcolor = fontcolor;
 	}
 
 	public int getBno() {
@@ -73,8 +79,29 @@ public class TmpBoardVO{
 		this.write_date = write_date;
 	}
 
-	@Override
-	public String toString() {
-		return "TmpBoardVO [bno=" + bno + ", title=" + title + ", content=" + content + ", filepath=" + filepath + ", regdate=" + regdate + "]";
+	public String getFont() {
+		return font;
 	}
+
+	public void setFont(String font) {
+		this.font = font;
+	}
+
+	public String getFontsize() {
+		return fontsize;
+	}
+
+	public void setFontsize(String fontsize) {
+		this.fontsize = fontsize;
+	}
+
+	public String getFontcolor() {
+		return fontcolor;
+	}
+
+	public void setFontcolor(String fontcolor) {
+		this.fontcolor = fontcolor;
+	}
+	
+	
 }

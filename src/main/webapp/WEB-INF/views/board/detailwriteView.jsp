@@ -63,7 +63,8 @@
     	return imgSource;
     }        
   	
-   	function sumcontent(){//게시글수정 함수   		
+   	function sumcontent(){//게시글수정 함수   
+   		
 		var imgSourceChk = imgSrcMake();		
 
 		if(imgSourceChk != ""){
@@ -73,19 +74,27 @@
    			var contentValue = contentValue1 + contentValue2;
    			var contentTotal = contentValue1 + addString+ contentValue2;
    			var bno = $('#bno').val();
+   			
+   			var fontsize = $('select[name=fontsize]').val();
+   			var fontcolor = $('select[name=fontcolor]').val();
+   			var font = $('select[name=font]').val();   
    						
-   			if(contentValue == "" || contentValue == "테스트테스트" ){//텍스트에리어에 테스트가 적혀있어서 작동하지 않는다.
+   			if(contentValue == ""){
    				alert("내용을 적어주세요.");
    				return false;
    			}
-   			
+   			alert(bno);
    			//ajax 데이터 통신
    			$.ajax({ 
    				type: 'POST',
    				url : 'update',
    				data: {
 					   "content" 	 : contentTotal,	
-					   "bno" : bno
+					   "bno" : bno,
+					   "filepathurl" : $("#imgSrc").val(),
+					   "fontsize":fontsize,
+   					   "fontcolor":fontcolor,
+   					   "font":font
    				},
    				success : function(data) { 
    					console.log(data);
@@ -169,7 +178,6 @@
 						<c:set var="bno1" value="${list.bno }"/>												
 							<tr>
 								<td <c:if test="${bno1==bno2 }">style="border:1px red solid;"</c:if>>
-									<input id="bno" type="hidden" value="${list.bno}"/>
 									<a href="detailwriteView?bno=${list.bno}">
 										<img onclick="detailwriteView(${list.bno});" style="cursor:hand" 
 										src="${pageContext.request.contextPath}/resources/image/${list.filepath}" width="100%" height="30%"/>
@@ -206,11 +214,11 @@
 									</td>
 									<td>
 										<div id="styledatepicker">
-										<c:forEach items="${list2}" var = "list2">
-												<c:set var="content1" value="${list2.content }"/>
-												<input type="text" value="작성일 : ${list2.write_date }" readonly/>
-												<input type="hidden" id="bno" name="bno" value="${list2.bno }"/>
-												</c:forEach> 											
+											<c:forEach items="${list2}" var = "list2">
+											<c:set var="content1" value="${list2.content }"/>
+											<input type="text" value="작성일 : ${list2.write_date }" readonly/>
+											<input type="hidden" id="bno" name="bno" value="${list2.bno }"/>
+											</c:forEach> 											
 										</div>
 									</td>
 								</tr>
@@ -225,17 +233,17 @@
 								<tr><!-- 게시글 꾸미기 -->
 									<td>
 									<input type="hidden" id="writer" name="writer" value="${sessionScope.userid }"/>
-										<select id="font-size" onchange="changeSize()" >
+										<select id="font-size" onchange="changeSize()" name="fontsize">
 											<option value="15">15</option>
 											<option value="25">25</option>
 											<option value="35">35</option>
 										</select>																		
-										<select id="font-color" onchange="changeColor()" >
+										<select id="font-color" onchange="changeColor()" name="fontcolor">
 											<option value="red">빨강</option>
 											<option value="blue">파랑</option>
 											<option value="yellow">노랑</option>
 										</select>																		
-										<select id="font1" onchange="changeFont()" >
+										<select id="font1" onchange="changeFont()" name="font">
 											<option value="Serif">돋움체</option>
 											<option value="Arial">바탕체</option>
 											<option value="Courier">고딕체</option>
