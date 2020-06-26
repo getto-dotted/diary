@@ -62,7 +62,7 @@ public class BoardController {
 		return mv;
 	}
 	
-	@RequestMapping(value = "/tdv")
+	@RequestMapping(value = "/tempdetailview")
 	public ModelAndView tmpdetelview(TmpBoardVO tmpboardVO, HttpSession se, HttpServletRequest req) throws Exception {
 		ModelAndView mv = new ModelAndView();
 		BoardVO vo = new BoardVO();
@@ -105,6 +105,22 @@ public class BoardController {
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
 		String writer = request.getParameter("writer");
+		
+		String font = "";
+		String fontsize = "";
+		String fontcolor = "";		
+		
+		if(request.getParameter("font")!=null) {
+			font = request.getParameter("font");			
+		}
+		if(request.getParameter("fontsize")!=null) {
+			fontsize = request.getParameter("fontsize");
+		}
+		if(request.getParameter("fontcolor")!=null) {
+			fontcolor = request.getParameter("fontcolor");
+		}
+		
+		
 		// 인코딩 되기 전 파일 경로
 		String filepathurl = request.getParameter("filepathurl");
 		// 인코딩 된 파일 경로 담을 변수 초기화
@@ -112,18 +128,22 @@ public class BoardController {
 
 		String imagePath = request.getSession().getServletContext().getRealPath("resources/image/");
 		
-		System.out.println("title :: " + title);
-		System.out.println("content :: " + content);
-		System.out.println("writer :: " + writer);
-		System.out.println("filepathurl :: " + filepathurl);
+		System.out.println("날짜: " + title);
+		System.out.println("내용: " + content);
+		System.out.println("작성자: " + writer);
+		System.out.println("url 경로" + filepathurl);
 		// 파일 인코딩 시작
 		filepathtrue = filepath(filepathurl,imagePath);
-		System.out.println("filepathtrue :: " + filepathtrue);
+		System.out.println("파일 경로: " + filepathtrue);
 
 		boardVO.setTitle(title);
 		boardVO.setContent(content);
 		boardVO.setWriter(writer);
 		boardVO.setFilepath(filepathtrue);
+		boardVO.setFont(font);
+		boardVO.setFontcolor(fontcolor);
+		boardVO.setFontsize(fontsize);
+		
 
 		service.write(boardVO);
 
@@ -141,8 +161,21 @@ public class BoardController {
 		
 		String title = "";
 		
+		String font = "";
+		String fontsize = "";
+		String fontcolor = "";
+		
 		if(request.getParameter("title")!=null) {
 			title = request.getParameter("title");
+		}
+		if(request.getParameter("font")!=null) {
+			font = request.getParameter("font");			
+		}
+		if(request.getParameter("fontsize")!=null) {
+			fontsize = request.getParameter("fontsize");
+		}
+		if(request.getParameter("fontcolor")!=null) {
+			fontcolor = request.getParameter("fontcolor");
 		}
 		
 		String content = request.getParameter("content");
@@ -153,16 +186,19 @@ public class BoardController {
 		
 		String imagePath = request.getSession().getServletContext().getRealPath("resources/image/");
 		
-		System.out.println("title :: " + title);
-		System.out.println("content :: " + content);
-		System.out.println("filepathurl :: " + filepathurl);
+		System.out.println("날짜: " + title);
+		System.out.println("내용: " + content);
+		System.out.println("url 경로" + filepathurl);
 		// 파일 인코딩 시작
 		filepathtrue = filepath(filepathurl,imagePath);
-		System.out.println("filepathtrue :: " + filepathtrue);
+		System.out.println("파일 경로 " + filepathtrue);
 		
 		tmpboardVO.setTitle(title);
 		tmpboardVO.setContent(content);		
 		tmpboardVO.setFilepath(filepathtrue);
+		tmpboardVO.setFont(font);
+		tmpboardVO.setFontcolor(fontcolor);
+		tmpboardVO.setFontsize(fontsize);
 		
 		service3.write(tmpboardVO);
 		
@@ -180,6 +216,22 @@ public class BoardController {
 		
 		String bno1 = req.getParameter("bno");
 		String content = req.getParameter("content");
+		
+		String font = "";
+		String fontsize = "";
+		String fontcolor = "";
+		
+		if(req.getParameter("font")!=null) {
+			font = req.getParameter("font");			
+		}
+		if(req.getParameter("fontsize")!=null) {
+			fontsize = req.getParameter("fontsize");
+		}
+		if(req.getParameter("fontcolor")!=null) {
+			fontcolor = req.getParameter("fontcolor");
+		}
+		
+		
 		// 인코딩 되기 전 파일 경로
 		String filepathurl = req.getParameter("filepathurl");
 		// 인코딩 된 파일 경로 담을 변수 초기화
@@ -193,6 +245,10 @@ public class BoardController {
 		VO.setBno(bno);
 		VO.setContent(content);
 		VO.setFilepath(filepathtrue);
+		VO.setFont(font);
+		VO.setFontcolor(fontcolor);
+		VO.setFontsize(fontsize);
+		
 		service.update(VO);
 
 		return "detailwriteView";

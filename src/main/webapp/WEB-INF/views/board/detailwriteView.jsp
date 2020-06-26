@@ -82,10 +82,9 @@
    			if(contentValue == ""){
    				alert("내용을 적어주세요.");
    				return false;
-   			}
-   			alert(bno);
-   			//ajax 데이터 통신
-   			$.ajax({ 
+   			}   			
+   			
+   			$.ajax({//ajax 데이터 통신
    				type: 'POST',
    				url : 'update',
    				data: {
@@ -165,6 +164,11 @@
    		text2.style.fontFamily =  font1.value;
 
    	}
+   	window.onload = function(){
+   		changeSize();
+   		changeColor();
+   		changeFont();
+   	}
 </script>
 	<body>
 		<c:forEach items="${list2}" var = "list2">
@@ -216,6 +220,9 @@
 										<div id="styledatepicker">
 											<c:forEach items="${list2}" var = "list2">
 											<c:set var="content1" value="${list2.content }"/>
+											<c:set var="font" value="${list2.font }"/>
+											<c:set var="fontsize" value="${list2.fontsize }"/>
+											<c:set var="fontcolor" value="${list2.fontcolor }"/>
 											<input type="text" value="작성일 : ${list2.write_date }" readonly/>
 											<input type="hidden" id="bno" name="bno" value="${list2.bno }"/>
 											</c:forEach> 											
@@ -234,19 +241,22 @@
 									<td>
 									<input type="hidden" id="writer" name="writer" value="${sessionScope.userid }"/>
 										<select id="font-size" onchange="changeSize()" name="fontsize">
-											<option value="15">15</option>
-											<option value="25">25</option>
-											<option value="35">35</option>
+											<option value="10" ${fontsize==Null ? "selected" : ""}>기본값</option>
+											<option value="15" ${fontsize==15 ? "selected" : ""}>15</option>
+											<option value="25" ${fontsize==25 ? "selected" : ""}>25</option>
+											<option value="35" ${fontsize==35 ? "selected" : ""}>35</option>
 										</select>																		
 										<select id="font-color" onchange="changeColor()" name="fontcolor">
-											<option value="red">빨강</option>
-											<option value="blue">파랑</option>
-											<option value="yellow">노랑</option>
+											<option value="black" ${fontsize==Null ? "selected" : ""}>검정</option>
+											<option value="red" ${fontcolor=="red" ? "selected" : ""}>빨강</option>
+											<option value="blue" ${fontcolor=="blue" ? "selected" : ""}>파랑</option>
+											<option value="yellow" ${fontcolor=="yellow" ? "selected" : ""}>노랑</option>
 										</select>																		
 										<select id="font1" onchange="changeFont()" name="font">
-											<option value="Serif">돋움체</option>
-											<option value="Arial">바탕체</option>
-											<option value="Courier">고딕체</option>
+											<option value="Serif" ${fontsize==Null ? "selected" : ""}>기본값</option>
+											<option value="Serif" ${font=="Serif" ? "selected" : ""}>돋움체</option>
+											<option value="Arial" ${font=="Arial" ? "selected" : ""}>바탕체</option>
+											<option value="Courier" ${font=="Courier" ? "selected" : ""}>고딕체</option>
 										</select>												
 									</td>
 									<td align="right">

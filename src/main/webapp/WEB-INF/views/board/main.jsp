@@ -210,7 +210,7 @@
    		//ajax 데이터 통신
 		$.ajax({ 
 			type: 'POST',
-			url : 'tdv',
+			url : 'tempdetailview',
 			data: {
 				   "bno"    	 : bno	   
 			},
@@ -332,9 +332,16 @@
    		text2.style.fontFamily =  font1.value;
 
    	}
-   	
+   	window.onload = function(){
+   		changeSize();
+   		changeColor();
+   		changeFont();
+   	}
 </script>
 	<body>
+		<c:forEach items="${list2}" var = "list2">
+		<c:set var="bno2" value="${list2.bno }"/>
+		</c:forEach>
 		<div class="leftroot" id= "leftroot">
 			<div class="alert alert-warning" role="alert">
 				<section id = "container">
@@ -345,10 +352,11 @@
 						</c:when>					
 						<c:otherwise>
 							<c:forEach items="${list}" var = "list">
+							<c:set var="bno1" value="${list.bno }"/>
 							<tr>
-								<td>								
+								<td <c:if test="${bno1==bno2 }">style="border:1px red solid;"</c:if>>								
 									<input id="bno" type="hidden" value="${list.bno}"/>
-									<a href="tdv?bno=${list.bno}">
+									<a href="tempdetailview?bno=${list.bno}">
 										<img onclick="detailwriteView(${list.bno});" style="cursor:hand" 
 										src="${pageContext.request.contextPath}/resources/image/${list.filepath}" 
 										width="100%" height="30%"/>
@@ -416,6 +424,9 @@
 					<form role="form">
 					<c:forEach items="${list2}" var = "list2">
 					<c:set var="content1" value="${list2.content }"/>
+					<c:set var="font" value="${list2.font }"/>
+					<c:set var="fontsize" value="${list2.fontsize }"/>
+					<c:set var="fontcolor" value="${list2.fontcolor }"/>
 					<c:set var="bno" value="${list2.bno }"/>
 					</c:forEach>
 						<table style="width: 100%">
@@ -441,19 +452,22 @@
 								<tr>
 									<td>
 										<select id="font-size" onchange="changeSize()" name="fontsize">
-											<option value="15">15</option>
-											<option value="25">25</option>
-											<option value="35">35</option>
+											<option value="10" ${fontsize==Null ? "selected" : ""}>기본값</option>
+											<option value="15" ${fontsize==15 ? "selected" : ""}>15</option>
+											<option value="25" ${fontsize==25 ? "selected" : ""}>25</option>
+											<option value="35" ${fontsize==35 ? "selected" : ""}>35</option>
 										</select>																		
 										<select id="font-color" onchange="changeColor()" name="fontcolor">
-											<option value="red">빨강</option>
-											<option value="blue">파랑</option>
-											<option value="yellow">노랑</option>
+											<option value="black" ${fontsize==Null ? "selected" : ""}>검정</option>
+											<option value="red" ${fontcolor=="red" ? "selected" : ""}>빨강</option>
+											<option value="blue" ${fontcolor=="blue" ? "selected" : ""}>파랑</option>
+											<option value="yellow" ${fontcolor=="yellow" ? "selected" : ""}>노랑</option>
 										</select>																		
 										<select id="font1" onchange="changeFont()" name="font">
-											<option value="Serif">돋움체</option>
-											<option value="Arial">바탕체</option>
-											<option value="Courier">고딕체</option>
+											<option value="Serif" ${fontsize==Null ? "selected" : ""}>기본값</option>
+											<option value="Serif" ${font=="Serif" ? "selected" : ""}>돋움체</option>
+											<option value="Arial" ${font=="Arial" ? "selected" : ""}>바탕체</option>
+											<option value="Courier" ${font=="Courier" ? "selected" : ""}>고딕체</option>
 										</select>																		
 									</td>									
 									<td align="right">																														

@@ -9,13 +9,19 @@
    								WRITE_DATE, 
    								CONTENT, 
    								WRITER,
-   								FILEPATH
+   								FILEPATH,
+   								FONT,
+   								FONTSIZE,
+   								FONTCOLOR
    							 )
      				 VALUES (	MP_BOARD_SEQ.NEXTVAL, 
      				 			#{title}, 
      				 			#{content}, 
      				 			#{writer},
-     				 			#{filepath}
+     				 			#{filepath},
+     				 			#{font},
+     				 			#{fontsize},
+     				 			#{fontcolor}
      				 		)
    </insert>
    <!-- 왼쪽 게시글 목록 불러오기 페이징이 안돼있는데 제한을 하는것이 낫지 않을까..?-->
@@ -37,8 +43,8 @@
    </select>
    
    <update id="update">
-   		UPDATE MP_BOARD SET   content   = #{content}, filepath = #{filepath},
-						  regdate   = sysdate
+   		UPDATE MP_BOARD SET   CONTENT   = #{content}, FILEPATH = #{filepath}, 
+   		FONT = #{font}, FONTSIZE = #{fontsize}, FONTCOLOR = #{fontcolor},  REGDATE   = SYSDATE
 		WHERE bno = #{bno}
    </update>
    

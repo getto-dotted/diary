@@ -51,27 +51,7 @@
 	};
 	
 	function frmchk(f){
-
-		if(!f.password1.value){
-			alert("비밀번호를 입력하세요");
-			f.password1.focus();
-			return false;
-		} 
-		if(!f.member_name.value){
-			alert("이름을 입력하세요");
-			f.member_name.focus();
-			return false;
-		} 
-		if(f.member_gender.value=="0"){
-			alert("성별을 입력하세요");
-			f.member_gender.focus();
-			return false;
-		} 
-		if(!f.member_phone.value){
-			alert("전화번호를 입력하세요");
-			f.member_phone.focus();
-			return false;
-		} 
+		
 		var chk = document.getElementById('appendlabelpassword').innerHTML;
 		var chkword ='<br><span style="color: blue;">비밀번호 확인 완료</span>';
 		
@@ -148,21 +128,23 @@
 					<input type="text" id="member_id" class="form-control" name="member_id" value="${sessionScope.userid }" readonly="readonly">
 				</div>
 				<div class="form-group">
-					<label for="PASSWORD">비밀번호</label>
+					<label for="PASSWORD">비밀번호<br /><span style="color:blue;">10~15자리의 영문,숫자 조합이어야 합니다.</span></label>	
 					<input type="password" id="password" class="form-control" name="member_password"  >
 				</div>
 				<div class="form-group">
 					<label id="appendlabelpassword" for="PASSWORD">비밀번호 재확인</label>
 					<label id="appendlabelpassword2" for="PASSWORD"></label>
-					<input type="password" id="password1"class="form-control" name="member_password1" >
+					<input type="password" id="password1"class="form-control" name="member_password1" 
+					required oninvalid="this.setCustomValidity('비밀번호를 입력해 주세요')" oninput = "setCustomValidity('')">
 				</div>
 				<div class="form-group">
 					<label for="NAME">이름</label>
-					<input type="text" class="form-control" name="member_name" value="${list.name }">
+					<input type="text" class="form-control" name="member_name" value="${list.name }"
+					required oninvalid="this.setCustomValidity('이름을 입력해 주세요')" oninput = "setCustomValidity('')">
 				</div>
 				<div class="form-group">
 					<label for="GENDER">성별</label>
-					<select class="form-control" name="member_gender" onchange="check()">
+					<select class="form-control" name="member_gender" onchange="check()" required="required">
 						<option value="0">성별</option>
 						<option value="1" ${list.gender==1 ? 'selected':'' }>남자</option>
 						<option value="2" ${list.gender==2 ? 'selected':'' }>여자</option>
@@ -182,7 +164,9 @@
 				</div>
 				<div class="form-group">
 					<label for="PHONE">핸드폰</label>
-					<input type="number" class="form-control" name="member_phone" maxlength="11" oninput="maxLengthCheck(this)" value="${list.phone }">
+					<input type="number" class="form-control" name="member_phone" maxlength="11" oninput="maxLengthCheck(this)" value="${list.phone }"
+					required="required" oninvalid="this.setCustomValidity('핸드폰 번호를 입력해주세요.')" 
+					onkeyup="setCustomValidity('')"/><!-- type="number"는 onkeyup을 사용한다. -->
 				</div>
 				<div class="form-group">
 					<label for="ADDRESS">주소</label>

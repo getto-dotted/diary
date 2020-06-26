@@ -8,12 +8,18 @@
    		INSERT INTO TMP_BOARD(	BNO, 
    								WRITE_DATE, 
    								CONTENT,    								
-   								FILEPATH
+   								FILEPATH,
+   								FONT,
+   								FONTSIZE,
+   								FONTCOLOR
    							 )
      				 VALUES (	MP_BOARD_SEQ.NEXTVAL, 
      				 			#{title}, 
      				 			#{content},
-     				 			#{filepath}
+     				 			#{filepath},
+     				 			#{font},
+     				 			#{fontsize},
+     				 			#{fontcolor}
      				 		)
    </insert>
    <!-- 왼쪽 게시글 목록 불러오기 페이징이 안돼있는데 제한을 하는것이 낫지 않을까..?-->
